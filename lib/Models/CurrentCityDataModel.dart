@@ -1,3 +1,4 @@
+
 class CurrentCityDataModel{
   String _cityName;
   var _lon;
