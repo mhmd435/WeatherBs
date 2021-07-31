@@ -24,10 +24,10 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   TextEditingController textEditingController = TextEditingController();
-  var cityName = "babol";
+  var cityName = "Tehran";
   var lat;
   var lon;
-  late Future<CurrentCityDataModel> futureCityData;
+  late StreamController<CurrentCityDataModel> streamCityData;
   late StreamController<List<ForecastDaysModel>> StreamForecastdays;
 
   @override
@@ -35,6 +35,8 @@ class _HomepageState extends State<Homepage> {
     // TODO: implement initState
     super.initState();
 
+    streamCityData = StreamController<CurrentCityDataModel>();
+    StreamForecastdays = StreamController<List<ForecastDaysModel>>();
     CallRequests();
   }
 
@@ -59,8 +61,8 @@ class _HomepageState extends State<Homepage> {
           ),
         ],
       ),
-      body: FutureBuilder<CurrentCityDataModel>(
-        future: futureCityData,
+      body: StreamBuilder<CurrentCityDataModel>(
+        stream: streamCityData.stream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             CurrentCityDataModel? cityDataModel = snapshot.data;
@@ -95,7 +97,7 @@ class _HomepageState extends State<Homepage> {
                             child: ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    futureCityData = SendRequestCurrentWeather(
+                                    SendRequestCurrentWeather(
                                         textEditingController.text, context);
                                   });
                                 },
@@ -106,7 +108,10 @@ class _HomepageState extends State<Homepage> {
                               controller: textEditingController,
                               decoration: InputDecoration(
                                   border: UnderlineInputBorder(),
-                                  hintText: 'Enter a City name'),
+                                  hintStyle: TextStyle(color: Colors.white),
+                                  hintText: 'Enter a City name'
+                              ),
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ],
@@ -209,7 +214,6 @@ class _HomepageState extends State<Homepage> {
                             child: StreamBuilder<List<ForecastDaysModel>>(
                                 stream: StreamForecastdays.stream,
                                 builder: (context, snapshot) {
-                                  print(snapshot.hasData);
                                   if (snapshot.hasData) {
                                     List<ForecastDaysModel>? forcastmodel =
                                         snapshot.data;
@@ -373,7 +377,7 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
-  Future<CurrentCityDataModel> SendRequestCurrentWeather(cityname, [BuildContext? context]) async {
+  void SendRequestCurrentWeather(cityname, [BuildContext? context]) async {
     var apiKey = 'ca5e39190e532d726ebd7985846865be';
     var city = cityname;
     var dataModel;
@@ -409,9 +413,9 @@ class _HomepageState extends State<Homepage> {
       print(e.response!.statusCode);
       print(e.message);
       ScaffoldMessenger.of(context!)
-          .showSnackBar(SnackBar(content: Text("there is an error")));
+          .showSnackBar(SnackBar(content: Text("City Not Found")));
     }
-    return dataModel;
+    streamCityData.add(dataModel);
   }
 
   void SendRequest7DaysForcast(lat, lon) async {
@@ -486,7 +490,6 @@ class _HomepageState extends State<Homepage> {
   }
 
   void CallRequests() {
-    futureCityData = SendRequestCurrentWeather(cityName);
-    StreamForecastdays = StreamController<List<ForecastDaysModel>>();
+    SendRequestCurrentWeather(cityName);
   }
 }
