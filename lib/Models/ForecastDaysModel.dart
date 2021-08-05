@@ -5,8 +5,10 @@ class ForecastDaysModel{
   var _temp;
   String _main;
   String _description;
+  var _humidity;
 
-  ForecastDaysModel(this._datetime, this._temp, this._main, this._description);
+
+  ForecastDaysModel(this._datetime, this._temp, this._main, this._description, this._humidity);
 
   String get description => _description;
 
@@ -16,4 +18,5 @@ class ForecastDaysModel{
 
   get datetime => _datetime;
 
+  get humidity => _humidity;
 }
