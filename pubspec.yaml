@@ -37,6 +37,7 @@ dependencies:
   flutter_typeahead: ^3.2.0
   flutter_bloc: ^7.3.0
   rxdart: ^0.27.2
+  flutter_native_splash: ^1.2.3
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +66,7 @@ flutter:
     - images/icons8-storm-80.png
     - images/icons8-windy-weather-80.png
     - images/icons8-sun-96.png
+    - images/weatherlogo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

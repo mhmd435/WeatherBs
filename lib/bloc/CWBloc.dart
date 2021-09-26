@@ -24,7 +24,7 @@ class CWBloc{
       CurrentCityDataModel currentCityDataModel = await _currentWeatherRepository.fetchCurrentWeatherData(cityname);
       CWSink!.add(ResponseModel.completed(currentCityDataModel));
     } catch (e) {
-      CWSink!.add(ResponseModel.error(e.toString()));
+      CWSink!.add(ResponseModel.error("Check your connection..."));
       print(e);
     }
   }

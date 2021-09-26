@@ -89,15 +89,18 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
                 CurrentCityDataModel? cityDataModel = snapshot.data!.data;
                 _fwBloc.fetchForecastWeather(cityDataModel!.lat,cityDataModel.lon);
 
+                log(cityDataModel.timezone.toString());
+
                 final formatter = DateFormat.jm();
                 var sunrise = formatter.format(
                     new DateTime.fromMillisecondsSinceEpoch(
-                        cityDataModel.sunrise * 1000,
+                        (cityDataModel.sunrise * 1000) + cityDataModel.timezone * 1000,
                         isUtc: true));
                 var sunset = formatter.format(
                     new DateTime.fromMillisecondsSinceEpoch(
-                        cityDataModel.sunset * 1000,
+                        (cityDataModel.sunset * 1000) + cityDataModel.timezone * 1000,
                         isUtc: true));
+
 
                 return GestureDetector(
                   onTap: (){
@@ -105,15 +108,18 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
                     new TextEditingController().clear();
                   },
                   child: Container(
+                    height: MediaQuery.of(context).size.height,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: getBackGroundImage(),
-                            fit: BoxFit.cover)),
+                            fit: BoxFit.cover,)),
                     child: Center(
-                      child: Column(children: [
+                      child: ListView(
+
+                          children: [
                         Padding(
                           padding:
-                          const EdgeInsets.only(top: 50, left: 20, right: 20),
+                          const EdgeInsets.only(top: 30, left: 20, right: 20),
                           child: Row(
                             children: [
                               Expanded(
@@ -335,21 +341,23 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
                                 }),
                           ),
                         ),
-                        SmoothPageIndicator(
-                            controller: _pageController,
-                            // PageController
-                            count: 2,
-                            effect: ExpandingDotsEffect(
-                                dotWidth: 10,
-                                dotHeight: 10,
-                                spacing: 5,
-                                dotColor: Colors.grey,
-                                activeDotColor: Colors.white),
-                            // your preferred effect
-                            onDotClicked: (index) => _pageController.animateToPage(
-                                index,
-                                duration: Duration(microseconds: 500),
-                                curve: Curves.bounceOut)),
+                        Center(
+                          child: SmoothPageIndicator(
+                              controller: _pageController,
+                              // PageController
+                              count: 2,
+                              effect: ExpandingDotsEffect(
+                                  dotWidth: 10,
+                                  dotHeight: 10,
+                                  spacing: 5,
+                                  dotColor: Colors.grey,
+                                  activeDotColor: Colors.white),
+                              // your preferred effect
+                              onDotClicked: (index) => _pageController.animateToPage(
+                                  index,
+                                  duration: Duration(microseconds: 500),
+                                  curve: Curves.bounceOut)),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(top: 30),
                           child: Container(
@@ -411,7 +419,7 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
+                          padding: const EdgeInsets.only(top: 10.0,bottom: 30),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -499,15 +507,13 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
                                 ),
                               ]),
                         ),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
-                              child: Text("powered by Besenior",style: TextStyle(color: Colors.white,fontSize: 15),),
-                            ),
-                          ),
-                        )
+                        // Align(
+                        //   alignment: FractionalOffset.bottomCenter,
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.only(bottom: 5),
+                        //     child: Text("powered by Besenior",style: TextStyle(color: Colors.white,fontSize: 15),),
+                        //   ),
+                        // )
                       ]),
                     ),
                   ),
@@ -553,6 +559,8 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
   Future<List<SuggestCityModel>> SendRequestCitySuggestion(String prefix) async {
     List<SuggestCityModel> list = [];
 
+    try{
+
       var response = await Dio().get(
           "http://geodb-free-service.wirefreethought.com/v1/geo/cities",
           queryParameters: {'limit': 7, 'offset': 0, 'namePrefix': prefix});
@@ -561,6 +569,11 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
         list.add(SuggestCityModel(item['name'], item['region'], item['country'],
             item['countryCode']));
       }
+
+    }catch (e){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Connection lost...")));
+    }
+
 
     return list;
   }
@@ -732,11 +745,11 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
     String formattedDate = DateFormat('kk').format(now);
     print(formattedDate);
     if(6 > int.parse(formattedDate)){
-      return AssetImage('images/nightpic.jpg');
+      return AssetImage('images/pic_bg.jpg');
     }else if(18 > int.parse(formattedDate)){
       return AssetImage('images/pic_bg.jpg');
     }else{
-      return AssetImage('images/nightpic.jpg');
+      return AssetImage('images/pic_bg.jpg');
     }
   }
 }

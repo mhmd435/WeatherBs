@@ -15,6 +15,7 @@ class CurrentCityDataModel{
   String _country;
   var _sunrise;
   var _sunset;
+  var _timezone;
 
   CurrentCityDataModel(
       this._cityName,
@@ -31,7 +32,8 @@ class CurrentCityDataModel{
       this._dataTime,
       this._country,
       this._sunrise,
-      this._sunset);
+      this._sunset,
+      this._timezone);
 
   get sunset => _sunset;
 
@@ -62,4 +64,6 @@ class CurrentCityDataModel{
   get lon => _lon;
 
   get cityName => _cityName;
+
+  get timezone => _timezone;
 }

@@ -24,7 +24,9 @@ class CurrentWeatherRepository{
         response.data["dt"],
         response.data["sys"]["country"],
         response.data["sys"]["sunrise"],
-        response.data["sys"]["sunset"]);
+        response.data["sys"]["sunset"],
+        response.data["timezone"],
+    );
     return dataModel;
   }
 }
