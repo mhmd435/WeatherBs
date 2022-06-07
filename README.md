@@ -1,9 +1,10 @@
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+![Version](https://img.shields.io/badge/version-1.0-yellow)
+![Based On](https://img.shields.io/badge/Base-Flutter-blue)
+![lang](https://img.shields.io/badge/lang-dart-9cf)
+
+
+<img src="https://github.com/mhmd435/WeatherBs/blob/product/images/weatherlogo.png" alt="Logo" width="80" height="80">
+
 # WeatherBs
 
 Have the weather of your city
@@ -13,13 +14,7 @@ Have the weather of your city
 Welcome to besenior academy, This is where you will find android and flutter projects where you are free to contribute too.
 You can Contribute by giving your codes and this is amazing for other people to see you.
 
-<div align="center">
-  <a href="https://open.spotify.com/user/6s6pbtefezpookh8gwnkko15v">
-    <img src="https://readme-spotify-tingz.vercel.app/api/now-playing">
-  </a>
-</div>
-
-### Contribution Guidelines
+## Contribution Guidelines
 
 ### Instructions
 
@@ -52,12 +47,7 @@ You can Contribute by giving your codes and this is amazing for other people to 
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+
 
 
 
@@ -65,7 +55,6 @@ You can Contribute by giving your codes and this is amazing for other people to 
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Best-README-Template</h3>
