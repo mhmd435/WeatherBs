@@ -44,433 +44,434 @@ class _HomepageState extends State<Homepage>{
 
   @override
   Widget build(BuildContext context) {
+
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.black,
-      body: BlocBuilder<CwBloc, CwState>(
-            builder: (BuildContext context, state) {
-              if(state is CwLoading){
-                return DotLoadingWidget();
-              }else if(state is CwCompleted){
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+              image: getBackGroundImage(),
+              fit: BoxFit.cover,)),
+        child: BlocBuilder<CwBloc, CwState>(
+              builder: (BuildContext context, state) {
+                if(state is CwLoading){
+                  return DotLoadingWidget();
+                }else if(state is CwCompleted){
 
-                // get data from state
-                CurrentCityModel cityDataModel = state.currentCityModel;
-                BlocProvider.of<FwBloc>(context).add(LoadFwEvent(cityDataModel.coord!.lat!, cityDataModel.coord!.lon!));
+                  // get data from state
+                  CurrentCityModel cityDataModel = state.currentCityModel;
+                  BlocProvider.of<FwBloc>(context).add(LoadFwEvent(cityDataModel.coord!.lat!, cityDataModel.coord!.lon!));
 
-                final formatter = DateFormat.jm();
-                var sunrise = formatter.format(
-                    new DateTime.fromMillisecondsSinceEpoch(
-                        (cityDataModel.sys!.sunrise! * 1000) + cityDataModel.timezone! * 1000,
-                        isUtc: true));
-                var sunset = formatter.format(
-                    new DateTime.fromMillisecondsSinceEpoch(
-                        (cityDataModel.sys!.sunset! * 1000) + cityDataModel.timezone! * 1000,
-                        isUtc: true));
+                  final formatter = DateFormat.jm();
+                  var sunrise = formatter.format(
+                      new DateTime.fromMillisecondsSinceEpoch(
+                          (cityDataModel.sys!.sunrise! * 1000) + cityDataModel.timezone! * 1000,
+                          isUtc: true));
+                  var sunset = formatter.format(
+                      new DateTime.fromMillisecondsSinceEpoch(
+                          (cityDataModel.sys!.sunset! * 1000) + cityDataModel.timezone! * 1000,
+                          isUtc: true));
 
-                return GestureDetector(
-                  onTap: (){
-                    FocusScope.of(context).unfocus();
-                    new TextEditingController().clear();
-                  },
-                  child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: getBackGroundImage(),
-                          fit: BoxFit.cover,)),
-                    child: Center(
-                      child: ListView(
-
-                          children: [
-                            Padding(
-                              padding:
-                              const EdgeInsets.only(top: 30, left: 20, right: 20),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                      child: TypeAheadField(
-                                        textFieldConfiguration: TextFieldConfiguration(
-                                            onSubmitted: (String prefix){
-                                                textEditingController.text = prefix;
-                                                BlocProvider.of<CwBloc>(context).add(LoadCwEvent(prefix));
-                                            },
-                                            controller: textEditingController,
-                                            style:
-                                            DefaultTextStyle.of(context).style.copyWith(
-                                              fontSize: 20,
-                                              color: Colors.white,
+                  return GestureDetector(
+                    onTap: (){
+                      FocusScope.of(context).unfocus();
+                      new TextEditingController().clear();
+                    },
+                    child: ListView(
+                        children: [
+                          Padding(
+                            padding:
+                            EdgeInsets.only(top: height * 0.02, left: width * 0.03, right: width * 0.03),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: TypeAheadField(
+                                      textFieldConfiguration: TextFieldConfiguration(
+                                          onSubmitted: (String prefix){
+                                              textEditingController.text = prefix;
+                                              BlocProvider.of<CwBloc>(context).add(LoadCwEvent(prefix));
+                                          },
+                                          controller: textEditingController,
+                                          style:
+                                          DefaultTextStyle.of(context).style.copyWith(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          ),
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                            const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                            hintText: "Enter a City...",
+                                            hintStyle: TextStyle(color: Colors.white),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.white),
                                             ),
-                                            decoration: InputDecoration(
-                                              contentPadding:
-                                              const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                              hintText: "Enter a City...",
-                                              hintStyle: TextStyle(color: Colors.white),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.white),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.white),
-                                              ),
-                                            )),
-                                        suggestionsCallback: (String prefix) async {
-                                          return sendRequestCitySuggestion(prefix);
-                                        },
-                                        itemBuilder: (context, SuggestCityModel model) {
-                                          return ListTile(
-                                            leading: Icon(Icons.location_on),
-                                            title: Text(model.Name),
-                                            subtitle:
-                                            Text(model.region + ", " + model.country),
-                                          );
-                                        },
-                                        onSuggestionSelected: (SuggestCityModel model) {
-                                            textEditingController.text = model.Name;
-                                            BlocProvider.of<CwBloc>(context).add(LoadCwEvent(model.Name));
-                                        },
-                                      )),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: Container(
-                                width: double.infinity,
-                                height: 400,
-                                child: PageView.builder(
-                                    physics: AlwaysScrollableScrollPhysics(),
-                                    allowImplicitScrolling: true,
-                                    controller: _pageController,
-                                    itemCount: 2,
-                                    itemBuilder: (context, position) {
-                                      if (position == 0) {
-                                        return Column(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 50),
-                                              child: Text(
-                                                cityDataModel.name!,
-                                                style: TextStyle(
-                                                    fontSize: 30, color: Colors.white),
-                                              ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.white),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 20),
-                                              child: Text(
-                                                cityDataModel.weather![0].description!,
-                                                style: TextStyle(
-                                                    fontSize: 20, color: Colors.grey),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 20),
-                                              child: setIconForMain(cityDataModel.weather![0].description!),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 20),
-                                              child: Text(
-                                                cityDataModel.main!.temp!.round().toString() +
-                                                    "\u00B0",
-                                                style: TextStyle(
-                                                    fontSize: 50,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        "max",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            color: Colors.grey),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(
-                                                            top: 10.0),
-                                                        child: Text(
-                                                          cityDataModel.main!.tempMax!
-                                                              .round()
-                                                              .toString() +
-                                                              "\u00B0",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Colors.white),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        left: 10.0, right: 10),
-                                                    child: Container(
-                                                      color: Colors.grey,
-                                                      width: 2,
-                                                      height: 40,
-                                                    ),
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        "min",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            color: Colors.grey),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(
-                                                            top: 10.0),
-                                                        child: Text(
-                                                          cityDataModel.main!.tempMin!
-                                                              .round()
-                                                              .toString() +
-                                                              "\u00B0",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Colors.white),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                          )),
+                                      suggestionsCallback: (String prefix) async {
+                                        return sendRequestCitySuggestion(prefix);
+                                      },
+                                      itemBuilder: (context, SuggestCityModel model) {
+                                        return ListTile(
+                                          leading: Icon(Icons.location_on),
+                                          title: Text(model.Name),
+                                          subtitle:
+                                          Text(model.region + ", " + model.country),
                                         );
-                                      } else {
-                                        return Container(
-                                          height: 400,
-                                          child: Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Container(
-                                              width: double.infinity,
-                                              height: 250,
-                                              child: BlocBuilder<FwBloc, FwState>(
-                                                builder: (BuildContext context, state) {
-                                                  if(state is FwLoading){
-                                                    return DotLoadingWidget();
-                                                  }else if(state is FwCompleted){
-                                                    ForcastDaysModel forecastDaysModel = state.forcastDaysModel;
-
-                                                    return Column(
-                                                      children: [
-                                                        Text("Humidity",style: TextStyle(color: Colors.white,fontSize: 17),),
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(
-                                                                bottom: 20,
-                                                                right: 40,
-                                                                left: 20),
-                                                            child: LineChart(
-                                                              sampleData1(forecastDaysModel),
-                                                              swapAnimationDuration:
-                                                              Duration(milliseconds: 150),
-                                                              // Optional
-                                                              swapAnimationCurve:
-                                                              Curves.linear, // Optional
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }else if(state is FwError){
-                                                    return Center(
-                                                      child: Text(state.message!),
-                                                    );
-                                                  }else{
-                                                    return Container();
-                                                  }
-                                                },
-                                              ),
+                                      },
+                                      onSuggestionSelected: (SuggestCityModel model) {
+                                          textEditingController.text = model.Name;
+                                          BlocProvider.of<CwBloc>(context).add(LoadCwEvent(model.Name));
+                                      },
+                                    )),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: height * 0.02),
+                            child: Container(
+                              width: double.infinity,
+                              height: 400,
+                              child: PageView.builder(
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                  allowImplicitScrolling: true,
+                                  controller: _pageController,
+                                  itemCount: 2,
+                                  itemBuilder: (context, position) {
+                                    if (position == 0) {
+                                      return Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 50),
+                                            child: Text(
+                                              cityDataModel.name!,
+                                              style: TextStyle(
+                                                  fontSize: 30, color: Colors.white),
                                             ),
                                           ),
-                                        );
-                                      }
-                                    }),
-                              ),
-                            ),
-                            Center(
-                              child: SmoothPageIndicator(
-                                  controller: _pageController,
-                                  // PageController
-                                  count: 2,
-                                  effect: ExpandingDotsEffect(
-                                      dotWidth: 10,
-                                      dotHeight: 10,
-                                      spacing: 5,
-                                      dotColor: Colors.grey,
-                                      activeDotColor: Colors.white),
-                                  // your preferred effect
-                                  onDotClicked: (index) => _pageController.animateToPage(
-                                      index,
-                                      duration: Duration(microseconds: 500),
-                                      curve: Curves.bounceOut)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 30),
-                              child: Container(
-                                color: Colors.white24,
-                                height: 2,
-                                width: double.infinity,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: Container(
-                                width: double.infinity,
-                                height: 100,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Center(
-                                    child: BlocBuilder<FwBloc, FwState>(
-                                      builder: (BuildContext context, state) {
-                                        if(state is FwLoading){
-                                          return DotLoadingWidget();
-                                        }else if(state is FwCompleted){
-                                          ForcastDaysModel forcastDaysModel = state.forcastDaysModel;
-                                          List<Daily> mainDaily = forcastDaysModel.daily!;
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 20),
+                                            child: Text(
+                                              cityDataModel.weather![0].description!,
+                                              style: TextStyle(
+                                                  fontSize: 20, color: Colors.grey),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 20),
+                                            child: setIconForMain(cityDataModel.weather![0].description!),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 20),
+                                            child: Text(
+                                              cityDataModel.main!.temp!.round().toString() +
+                                                  "\u00B0",
+                                              style: TextStyle(
+                                                  fontSize: 50,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      "max",
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.grey),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(
+                                                          top: 10.0),
+                                                      child: Text(
+                                                        cityDataModel.main!.tempMax!
+                                                            .round()
+                                                            .toString() +
+                                                            "\u00B0",
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: Colors.white),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      left: 10.0, right: 10),
+                                                  child: Container(
+                                                    color: Colors.grey,
+                                                    width: 2,
+                                                    height: 40,
+                                                  ),
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      "min",
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.grey),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(
+                                                          top: 10.0),
+                                                      child: Text(
+                                                        cityDataModel.main!.tempMin!
+                                                            .round()
+                                                            .toString() +
+                                                            "\u00B0",
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: Colors.white),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    } else {
+                                      return Container(
+                                        height: 400,
+                                        child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 250,
+                                            child: BlocBuilder<FwBloc, FwState>(
+                                              builder: (BuildContext context, state) {
+                                                if(state is FwLoading){
+                                                  return DotLoadingWidget();
+                                                }else if(state is FwCompleted){
+                                                  ForcastDaysModel forecastDaysModel = state.forcastDaysModel;
 
-                                          return ListView.builder(
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: 8,
-                                              itemBuilder:
-                                                  (BuildContext context, int index) {
-                                                return DaysWeatherView(daily: mainDaily[index]);
-                                              });
-                                        }else if(state is FwError){
-                                          return Center(
-                                            child: Text(state.message!),
-                                          );
-                                        }else{
-                                          return Container();
-                                        }
-                                      },
-                                    ),
+                                                  return Column(
+                                                    children: [
+                                                      Text("Humidity",style: TextStyle(color: Colors.white,fontSize: 17),),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(
+                                                              bottom: 20,
+                                                              right: 40,
+                                                              left: 20),
+                                                          child: LineChart(
+                                                            sampleData1(forecastDaysModel),
+                                                            swapAnimationDuration:
+                                                            Duration(milliseconds: 150),
+                                                            // Optional
+                                                            swapAnimationCurve:
+                                                            Curves.linear, // Optional
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                }else if(state is FwError){
+                                                  return Center(
+                                                    child: Text(state.message!),
+                                                  );
+                                                }else{
+                                                  return Container();
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }),
+                            ),
+                          ),
+                          Center(
+                            child: SmoothPageIndicator(
+                                controller: _pageController,
+                                // PageController
+                                count: 2,
+                                effect: ExpandingDotsEffect(
+                                    dotWidth: 10,
+                                    dotHeight: 10,
+                                    spacing: 5,
+                                    dotColor: Colors.grey,
+                                    activeDotColor: Colors.white),
+                                // your preferred effect
+                                onDotClicked: (index) => _pageController.animateToPage(
+                                    index,
+                                    duration: Duration(microseconds: 500),
+                                    curve: Curves.bounceOut)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: Container(
+                              color: Colors.white24,
+                              height: 2,
+                              width: double.infinity,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: Container(
+                              width: double.infinity,
+                              height: 100,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Center(
+                                  child: BlocBuilder<FwBloc, FwState>(
+                                    builder: (BuildContext context, state) {
+                                      if(state is FwLoading){
+                                        return DotLoadingWidget();
+                                      }else if(state is FwCompleted){
+                                        ForcastDaysModel forcastDaysModel = state.forcastDaysModel;
+                                        List<Daily> mainDaily = forcastDaysModel.daily!;
+
+                                        return ListView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: 8,
+                                            itemBuilder:
+                                                (BuildContext context, int index) {
+                                              return DaysWeatherView(daily: mainDaily[index]);
+                                            });
+                                      }else if(state is FwError){
+                                        return Center(
+                                          child: Text(state.message!),
+                                        );
+                                      }else{
+                                        return Container();
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: Container(
-                                color: Colors.white24,
-                                height: 2,
-                                width: double.infinity,
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: Container(
+                              color: Colors.white24,
+                              height: 2,
+                              width: double.infinity,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0,bottom: 30),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0,bottom: 30),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text("wind speed",
+                                          style: TextStyle(fontSize: 17, color: Colors.amber)),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10.0),
+                                        child: Text(
+                                            cityDataModel.wind!.speed!.toString() + " m/s",
+                                            style: TextStyle(
+                                                fontSize: 14, color: Colors.white)),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Container(
+                                      color: Colors.white24,
+                                      height: 30,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Column(
                                       children: [
-                                        Text("wind speed",
-                                            style: TextStyle(fontSize: 17, color: Colors.amber)),
+                                        Text("sunrise",
+                                            style: TextStyle(
+                                                fontSize: 17, color: Colors.amber)),
                                         Padding(
                                           padding: const EdgeInsets.only(top: 10.0),
-                                          child: Text(
-                                              cityDataModel.wind!.speed!.toString() + " m/s",
+                                          child: Text(sunrise,
                                               style: TextStyle(
                                                   fontSize: 14, color: Colors.white)),
                                         ),
                                       ],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Container(
-                                        color: Colors.white24,
-                                        height: 30,
-                                        width: 2,
-                                      ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Container(
+                                      color: Colors.white24,
+                                      height: 30,
+                                      width: 2,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10.0),
-                                      child: Column(
-                                        children: [
-                                          Text("sunrise",
-                                              style: TextStyle(
-                                                  fontSize: 17, color: Colors.amber)),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 10.0),
-                                            child: Text(sunrise,
-                                                style: TextStyle(
-                                                    fontSize: 14, color: Colors.white)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Container(
-                                        color: Colors.white24,
-                                        height: 30,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10.0),
-                                      child: Column(children: [
-                                        Text("sunset",
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Column(children: [
+                                      Text("sunset",
+                                          style: TextStyle(
+                                              fontSize: 17, color: Colors.amber)),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10.0),
+                                        child: Text(sunset,
                                             style: TextStyle(
-                                                fontSize: 17, color: Colors.amber)),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 10.0),
-                                          child: Text(sunset,
-                                              style: TextStyle(
-                                                  fontSize: 14, color: Colors.white)),
-                                        ),
-                                      ]),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Container(
-                                        color: Colors.white24,
-                                        height: 30,
-                                        width: 2,
+                                                fontSize: 14, color: Colors.white)),
                                       ),
+                                    ]),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Container(
+                                      color: Colors.white24,
+                                      height: 30,
+                                      width: 2,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10.0),
-                                      child: Column(children: [
-                                        Text("humidity",
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Column(children: [
+                                      Text("humidity",
+                                          style: TextStyle(
+                                              fontSize: 17, color: Colors.amber)),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10.0),
+                                        child: Text(
+                                            cityDataModel.main!.humidity!.toString() + "%",
                                             style: TextStyle(
-                                                fontSize: 17, color: Colors.amber)),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 10.0),
-                                          child: Text(
-                                              cityDataModel.main!.humidity!.toString() + "%",
-                                              style: TextStyle(
-                                                  fontSize: 14, color: Colors.white)),
-                                        ),
-                                      ]),
-                                    ),
-                                  ]),
-                            ),
-                            // Align(
-                            //   alignment: FractionalOffset.bottomCenter,
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.only(bottom: 5),
-                            //     child: Text("powered by Besenior",style: TextStyle(color: Colors.white,fontSize: 15),),
-                            //   ),
-                            // )
-                          ]),
-                    ),
-                  ),
-                );
-              }else if(state is CwError){
-                return Center(
-                  child: Text(state.message!),
-                );
-              }else{
-                return Container();
-              }
-            },
-          )
+                                                fontSize: 14, color: Colors.white)),
+                                      ),
+                                    ]),
+                                  ),
+                                ]),
+                          ),
+                          // Align(
+                          //   alignment: FractionalOffset.bottomCenter,
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.only(bottom: 5),
+                          //     child: Text("powered by Besenior",style: TextStyle(color: Colors.white,fontSize: 15),),
+                          //   ),
+                          // )
+                        ]),
+                  );
+                }else if(state is CwError){
+                  return Center(
+                    child: Text(state.message!),
+                  );
+                }else{
+                  return Container();
+                }
+              },
+            ),
+      )
     );
   }
 
