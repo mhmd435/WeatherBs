@@ -15,9 +15,9 @@ Welcome to besenior academy, This is where you will find android and flutter pro
 You can Contribute by giving your codes and this is amazing for other people to see you.
 
 <div display: "inline-block";>
-<img src="https://github.com/mhmd435/WeatherBs/blob/product/screenshots/Screen%20Shot%201401-03-17%20at%2012.33.14.png" alt="screenshot" width="300">
-<img src="https://github.com/mhmd435/WeatherBs/blob/product/screenshots/Screen%20Shot%201401-03-17%20at%2012.33.32.png" alt="screenshot" width="300">
-<img src="https://github.com/mhmd435/WeatherBs/blob/product/screenshots/Screen%20Shot%201401-03-17%20at%2012.33.53.png" alt="screenshot" width="295">
+<img src="https://github.com/mhmd435/WeatherBs/blob/product/screenshots/Screen%20Shot%201401-03-17%20at%2012.33.14.png" alt="screenshot" width="250">
+<img src="https://github.com/mhmd435/WeatherBs/blob/product/screenshots/Screen%20Shot%201401-03-17%20at%2012.33.32.png" alt="screenshot" width="250">
+<img src="https://github.com/mhmd435/WeatherBs/blob/product/screenshots/Screen%20Shot%201401-03-17%20at%2012.33.53.png" alt="screenshot" width="245">
 </div>
 
 
