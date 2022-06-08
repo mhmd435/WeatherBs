@@ -8,11 +8,13 @@ import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:weather_app/data/Models/CurrentCityModel.dart';
 import 'package:weather_app/data/Models/ForcastDaysModel.dart';
+import 'package:weather_app/presentation/helpers/AppBackground.dart';
 import 'package:weather_app/presentation/helpers/DateConverter.dart';
 import 'package:weather_app/presentation/widgets/DayWeatherView.dart';
 import 'package:weather_app/presentation/widgets/DotLoadingWidget.dart';
 
 import '../../data/Models/SuggestCityModel.dart';
+import '../../data/Repositories/SuggestCityRepository.dart';
 import '../../logic/bloc/cwbloc/cw_bloc.dart';
 import '../../logic/bloc/fwbloc/fw_bloc.dart';
 
@@ -29,6 +31,9 @@ class _HomepageState extends State<Homepage>{
   var cityName = "Tehran";
 
   PageController _pageController = PageController();
+
+  SuggestCityRepository suggestCityRepository = SuggestCityRepository();
+
 
   @override
   void initState() {
@@ -54,7 +59,7 @@ class _HomepageState extends State<Homepage>{
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
             image: DecorationImage(
-              image: getBackGroundImage(),
+              image: AppBackground.getBackGroundImage(),
               fit: BoxFit.cover,)),
         child: BlocBuilder<CwBloc, CwState>(
               builder: (BuildContext context, state) {
@@ -114,19 +119,19 @@ class _HomepageState extends State<Homepage>{
                                             ),
                                           )),
                                       suggestionsCallback: (String prefix) async {
-                                        return sendRequestCitySuggestion(prefix);
+                                        return suggestCityRepository.fetchSuggestData(prefix);
                                       },
-                                      itemBuilder: (context, SuggestCityModel model) {
+                                      itemBuilder: (context, Data model) {
                                         return ListTile(
                                           leading: Icon(Icons.location_on),
-                                          title: Text(model.Name),
+                                          title: Text(model.name!),
                                           subtitle:
-                                          Text(model.region + ", " + model.country),
+                                          Text(model.region! + ", " + model.country!),
                                         );
                                       },
-                                      onSuggestionSelected: (SuggestCityModel model) {
-                                          textEditingController.text = model.Name;
-                                          BlocProvider.of<CwBloc>(context).add(LoadCwEvent(model.Name));
+                                      onSuggestionSelected: (Data model) {
+                                          textEditingController.text = model.name!;
+                                          BlocProvider.of<CwBloc>(context).add(LoadCwEvent(model.name!));
                                       },
                                     )),
                               ],
@@ -499,28 +504,6 @@ class _HomepageState extends State<Homepage>{
     }
   }
 
-  Future<List<SuggestCityModel>> sendRequestCitySuggestion(String prefix) async {
-    List<SuggestCityModel> list = [];
-
-    try{
-
-      var response = await Dio().get(
-          "http://geodb-free-service.wirefreethought.com/v1/geo/cities",
-          queryParameters: {'limit': 7, 'offset': 0, 'namePrefix': prefix});
-
-      for (var item in response.data['data']) {
-        list.add(SuggestCityModel(item['name'], item['region'], item['country'],
-            item['countryCode']));
-      }
-
-    }catch (e){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Connection lost...")));
-    }
-
-
-    return list;
-  }
-
   LineChartData sampleData1(ForcastDaysModel forecastDaysModel) {
     List<Daily> mainDaily = forecastDaysModel.daily!;
 
@@ -646,17 +629,6 @@ class _HomepageState extends State<Homepage>{
     ];
   }
 
-  AssetImage getBackGroundImage(){
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('kk').format(now);
-    print(formattedDate);
-    if(6 > int.parse(formattedDate)){
-      return AssetImage('images/pic_bg.jpg');
-    }else if(18 > int.parse(formattedDate)){
-      return AssetImage('images/pic_bg.jpg');
-    }else{
-      return AssetImage('images/pic_bg.jpg');
-    }
-  }
+
 
 }

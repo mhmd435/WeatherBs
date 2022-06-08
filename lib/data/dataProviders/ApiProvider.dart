@@ -43,4 +43,17 @@ class ApiProvider{
       throw Exception("Failed to current weather");
     }
   }
+
+  Future<dynamic> sendRequestCitySuggestion(String prefix) async {
+
+    var response = await Dio().get(
+        "http://geodb-free-service.wirefreethought.com/v1/geo/cities",
+        queryParameters: {'limit': 7, 'offset': 0, 'namePrefix': prefix});
+
+      if(response.statusCode == 200){
+        return response;
+      }else{
+        throw Exception("Failed to get information of your city.");
+      }
+  }
 }
