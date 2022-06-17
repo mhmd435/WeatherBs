@@ -50,6 +50,7 @@ Technologies used in this project:
 * Dart
 * Flutter
 * Bloc statemanagment and Bloc Architecture
+* Get It (Dependency Injection)
 * fl chart
 * Dio
 
