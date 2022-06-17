@@ -1,15 +1,18 @@
 
 import 'package:dio/dio.dart';
+import '../../locator.dart';
 
 class ApiProvider{
   // var lat = 35.6944;
   // var lon = 51.4215;
 
+  Dio _dio = Dio();
+
 
   Future<dynamic> sendRequestCurrentWeather(cityname) async {
     var apiKey = 'ff3dc1b7abb61e297479eec257ec60e8';
 
-      var response = await Dio().get(
+      var response = await _dio.get(
           "https://api.openweathermap.org/data/2.5/weather",
           queryParameters: {'q': cityname, 'appid': apiKey, 'units': 'metric'});
 
@@ -27,7 +30,7 @@ class ApiProvider{
     var apiKey = 'ff3dc1b7abb61e297479eec257ec60e8';
 
 
-    var response = await Dio().get(
+    var response = await _dio.get(
           "https://api.openweathermap.org/data/2.5/onecall",
           queryParameters: {
             'lat': lat,
@@ -46,7 +49,7 @@ class ApiProvider{
 
   Future<dynamic> sendRequestCitySuggestion(String prefix) async {
 
-    var response = await Dio().get(
+    var response = await _dio.get(
         "http://geodb-free-service.wirefreethought.com/v1/geo/cities",
         queryParameters: {'limit': 7, 'offset': 0, 'namePrefix': prefix});
 

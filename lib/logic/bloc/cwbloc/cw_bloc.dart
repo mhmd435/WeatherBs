@@ -1,9 +1,9 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:weather_app/data/Repositories/CurrentWeatherRepository.dart';
-
+import 'package:weatherBs/locator.dart';
 import '../../../data/Models/CurrentCityModel.dart';
+import '../../../data/Repositories/CurrentWeatherRepository.dart';
 
 part 'cw_event.dart';
 part 'cw_state.dart';
@@ -11,7 +11,7 @@ part 'cw_state.dart';
 class CwBloc extends Bloc<CwEvent, CwState> {
   CwBloc() : super(CwLoading()) {
 
-    final CurrentWeatherRepository currentWeatherRepository = CurrentWeatherRepository();
+    final CurrentWeatherRepository currentWeatherRepository = locator<CurrentWeatherRepository>();
 
     on<LoadCwEvent>((event, emit) async {
 

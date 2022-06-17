@@ -1,10 +1,9 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:weather_app/data/Repositories/ForecastWeatherRepository.dart';
-
 import '../../../data/Models/ForcastDaysModel.dart';
+import '../../../data/Repositories/ForecastWeatherRepository.dart';
+import '../../../locator.dart';
 
 part 'fw_event.dart';
 part 'fw_state.dart';
@@ -12,7 +11,7 @@ part 'fw_state.dart';
 class FwBloc extends Bloc<FwEvent, FwState> {
   FwBloc() : super(FwLoading()) {
 
-    final ForecastWeatherRepository forecastWeatherRepository = ForecastWeatherRepository();
+    final ForecastWeatherRepository forecastWeatherRepository = locator<ForecastWeatherRepository>();
 
     on<LoadFwEvent>((event, emit) async {
 

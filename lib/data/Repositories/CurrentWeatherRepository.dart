@@ -1,9 +1,11 @@
 
-import 'package:weather_app/data/Models/CurrentCityModel.dart';
-import 'package:weather_app/data/dataProviders/ApiProvider.dart';
+
+import '../../locator.dart';
+import '../Models/CurrentCityModel.dart';
+import '../dataProviders/ApiProvider.dart';
 
 class CurrentWeatherRepository{
-  ApiProvider _provider = ApiProvider();
+  ApiProvider _provider = locator<ApiProvider>();
 
   Future<CurrentCityModel> fetchCurrentWeatherData(cityname) async {
 

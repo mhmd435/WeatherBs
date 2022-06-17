@@ -1,22 +1,21 @@
 
-import 'package:dio/dio.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:weather_app/data/Models/CurrentCityModel.dart';
-import 'package:weather_app/data/Models/ForcastDaysModel.dart';
-import 'package:weather_app/presentation/helpers/AppBackground.dart';
-import 'package:weather_app/presentation/helpers/DateConverter.dart';
-import 'package:weather_app/presentation/widgets/DayWeatherView.dart';
-import 'package:weather_app/presentation/widgets/DotLoadingWidget.dart';
-
+import 'package:weatherBs/locator.dart';
+import '../../data/Models/CurrentCityModel.dart';
+import '../../data/Models/ForcastDaysModel.dart';
 import '../../data/Models/SuggestCityModel.dart';
 import '../../data/Repositories/SuggestCityRepository.dart';
 import '../../logic/bloc/cwbloc/cw_bloc.dart';
 import '../../logic/bloc/fwbloc/fw_bloc.dart';
+import '../helpers/AppBackground.dart';
+import '../helpers/DateConverter.dart';
+import '../widgets/DayWeatherView.dart';
+import '../widgets/DotLoadingWidget.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -32,7 +31,8 @@ class _HomepageState extends State<Homepage>{
 
   PageController _pageController = PageController();
 
-  SuggestCityRepository suggestCityRepository = SuggestCityRepository();
+  // Inject
+  SuggestCityRepository suggestCityRepository = locator<SuggestCityRepository>();
 
 
   @override

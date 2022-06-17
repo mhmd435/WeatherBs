@@ -1,10 +1,10 @@
 
-import 'package:weather_app/data/Models/CurrentCityModel.dart';
-import 'package:weather_app/data/Models/SuggestCityModel.dart';
-import 'package:weather_app/data/dataProviders/ApiProvider.dart';
+import '../../locator.dart';
+import '../Models/SuggestCityModel.dart';
+import '../dataProviders/ApiProvider.dart';
 
 class SuggestCityRepository{
-  ApiProvider _provider = ApiProvider();
+  ApiProvider _provider = locator<ApiProvider>();
 
   Future<List<Data>> fetchSuggestData(cityName) async {
 

@@ -1,9 +1,11 @@
-import 'package:weather_app/data/Models/ForcastDaysModel.dart';
-import 'package:weather_app/data/dataProviders/ApiProvider.dart';
+
+import '../../locator.dart';
+import '../Models/ForcastDaysModel.dart';
+import '../dataProviders/ApiProvider.dart';
 
 
 class ForecastWeatherRepository{
-  ApiProvider _provider = ApiProvider();
+  ApiProvider _provider = locator<ApiProvider>();
 
   Future<ForcastDaysModel> fetchForecastWeatherData(lat,lon) async {
 

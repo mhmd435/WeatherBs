@@ -1,11 +1,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_app/logic/bloc/cwbloc/cw_bloc.dart';
-import 'package:weather_app/logic/bloc/fwbloc/fw_bloc.dart';
-import 'package:weather_app/presentation/pages/HomePage.dart';
+import 'package:weatherBs/presentation/pages/HomePage.dart';
+import 'locator.dart';
+import 'logic/bloc/cwbloc/cw_bloc.dart';
+import 'logic/bloc/fwbloc/fw_bloc.dart';
 
-void main() {
+Future<void> main() async {
+  await setup();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: MultiBlocProvider(
