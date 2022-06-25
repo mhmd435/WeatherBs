@@ -5,13 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:weatherBs/core/params/ForecastParams.dart';
+import 'package:weatherBs/data/Repositories/SuggestCityRepositoryImpl.dart';
 import 'package:weatherBs/locator.dart';
 import '../../data/Models/CurrentCityModel.dart';
 import '../../data/Models/ForcastDaysModel.dart';
 import '../../data/Models/SuggestCityModel.dart';
-import '../../data/Repositories/SuggestCityRepository.dart';
-import '../../logic/bloc/cwbloc/cw_bloc.dart';
-import '../../logic/bloc/fwbloc/fw_bloc.dart';
+import '../../data/data_sources/remote/ApiProvider.dart';
+import '../bloc/cwbloc/cw_bloc.dart';
+import '../bloc/fwbloc/fw_bloc.dart';
 import '../helpers/AppBackground.dart';
 import '../helpers/DateConverter.dart';
 import '../widgets/DayWeatherView.dart';
@@ -32,7 +34,7 @@ class _HomepageState extends State<Homepage>{
   PageController _pageController = PageController();
 
   // Inject
-  SuggestCityRepository suggestCityRepository = locator<SuggestCityRepository>();
+  SuggestCityRepositoryImpl suggestCityRepository = SuggestCityRepositoryImpl(locator<ApiProvider>());
 
 
   @override
@@ -69,7 +71,10 @@ class _HomepageState extends State<Homepage>{
 
                   // get data from state
                   CurrentCityModel cityDataModel = state.currentCityModel;
-                  BlocProvider.of<FwBloc>(context).add(LoadFwEvent(cityDataModel.coord!.lat!, cityDataModel.coord!.lon!));
+
+                  // create params for api call
+                  ForecastParams forecastParams = ForecastParams(cityDataModel.coord!.lat!, cityDataModel.coord!.lon!);
+                  BlocProvider.of<FwBloc>(context).add(LoadFwEvent(forecastParams));
 
                   final formatter = DateFormat.jm();
                   var sunrise = formatter.format(

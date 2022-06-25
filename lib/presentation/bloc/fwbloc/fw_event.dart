@@ -4,7 +4,6 @@ part of 'fw_bloc.dart';
 abstract class FwEvent {}
 
 class LoadFwEvent extends FwEvent {
-  final double lat;
-  final double lon;
-  LoadFwEvent(this.lat, this.lon);
+  ForecastParams forecastParams;
+  LoadFwEvent(this.forecastParams);
 }
