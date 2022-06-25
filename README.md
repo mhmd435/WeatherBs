@@ -21,20 +21,6 @@ You can Contribute by giving your codes and this is amazing for other people to 
 </div>
 
 
-## Contribution Guidelines
-
-### Instructions
-
-- Fork this Repository
-- Clone your forked repository
-- Add your scripts
-- Commit & Push
-- Create a pull request
-- Star this repository
-- Wait for Pull Request to merge
-- Celebrate, your first step into the open Source World and contribute more
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -62,3 +48,17 @@ mohammad javad aghajani<br>
 [@linkedin](https://www.linkedin.com/in/mohammad-aghajani-435830206/)<br>
 email: mhm.aghajani435@gmail.com<br>
 Project Link: https://github.com/mhmd435/WeatherBs
+
+
+## Contribution Guidelines
+
+### Instructions
+
+- Fork this Repository
+- Clone your forked repository
+- Add your scripts
+- Commit & Push
+- Create a pull request
+- Star this repository
+- Wait for Pull Request to merge
+- Celebrate, your first step into the open Source World and contribute more
