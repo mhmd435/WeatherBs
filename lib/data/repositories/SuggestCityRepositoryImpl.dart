@@ -1,6 +1,6 @@
 
 import 'package:dio/dio.dart';
-import '../Models/SuggestCityModel.dart';
+import '../../domain/Models/SuggestCityModel.dart';
 import '../data_sources/remote/ApiProvider.dart';
 
 class SuggestCityRepositoryImpl{
