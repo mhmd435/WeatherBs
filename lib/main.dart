@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weatherBs/presentation/bloc/bookmark_bloc/bookmark_bloc.dart';
-import 'package:weatherBs/presentation/bloc/home_bloc/home_bloc.dart';
-import 'package:weatherBs/presentation/screens/MainWrapper.dart';
+import 'package:weatherBs/features/feature_bookmark/presentation/bloc/bookmark_bloc.dart';
+import 'package:weatherBs/features/feature_weather/presentation/bloc/home_bloc.dart';
+import 'core/widgets/MainWrapper.dart';
 import 'locator.dart';
 
 Future<void> main() async {
