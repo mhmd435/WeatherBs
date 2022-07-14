@@ -2,7 +2,7 @@
 import 'package:weatherBs/core/resources/data_state.dart';
 import 'package:weatherBs/features/feature_bookmark/domain/repository/city_repository.dart';
 
-import '../../data/models/city_model.dart';
+import '../entities/city_model.dart';
 
 
 class GetAllCityUseCase {

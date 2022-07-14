@@ -3,7 +3,7 @@ import 'package:weatherBs/core/resources/data_state.dart';
 import 'package:weatherBs/features/feature_bookmark/domain/repository/city_repository.dart';
 
 import '../data_source/local/city_dao.dart';
-import '../models/city_model.dart';
+import '../../domain/entities/city_model.dart';
 
 class CityRepositoryImpl extends CityRepository{
   CityDao cityDao;

@@ -1,6 +1,6 @@
 
 
-import '../../data/models/city_model.dart';
+import '../../domain/entities/city_model.dart';
 
 abstract class GetAllCityStatus {}
 

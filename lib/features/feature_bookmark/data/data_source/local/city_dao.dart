@@ -1,7 +1,7 @@
 
 import 'package:floor/floor.dart';
 
-import '../../models/city_model.dart';
+import '../../../domain/entities/city_model.dart';
 
 @dao
 abstract class CityDao {

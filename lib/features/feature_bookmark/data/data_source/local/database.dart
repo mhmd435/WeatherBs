@@ -4,7 +4,7 @@ import 'package:weatherBs/features/feature_bookmark/data/data_source/local/city_
 
 import 'package:sqflite/sqflite.dart' as sqflite;
 
-import '../../models/city_model.dart';
+import '../../../domain/entities/city_model.dart';
 
 part 'database.g.dart'; // the generated code will be there
 

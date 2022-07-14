@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weatherBs/features/feature_bookmark/presentation/bloc/bookmark_bloc.dart';
-import '../../data/models/city_model.dart';
+import '../../domain/entities/city_model.dart';
 import '../bloc/get_all_city_status.dart';
 import '../../../feature_weather/presentation/bloc/home_bloc.dart';
 

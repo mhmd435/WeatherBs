@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weatherBs/features/feature_bookmark/presentation/bloc/bookmark_bloc.dart';
-import '../../../feature_bookmark/data/models/city_model.dart';
+import '../../../feature_bookmark/domain/entities/city_model.dart';
 import '../../../feature_bookmark/presentation/bloc/get_city_status.dart';
 import '../../../feature_bookmark/presentation/bloc/save_city_status.dart';
 

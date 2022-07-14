@@ -1,6 +1,6 @@
 
 import 'package:weatherBs/core/resources/data_state.dart';
-import '../../data/models/city_model.dart';
+import '../entities/city_model.dart';
 
 abstract class CityRepository{
 
