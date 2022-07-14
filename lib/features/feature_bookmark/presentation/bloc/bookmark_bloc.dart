@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mockito/mockito.dart';
 import 'package:weatherBs/features/feature_bookmark/domain/use_cases/delete_city_usecase.dart';
 import 'package:weatherBs/features/feature_bookmark/presentation/bloc/get_all_city_status.dart';
 import 'package:weatherBs/features/feature_bookmark/presentation/bloc/get_city_status.dart';
 import 'package:weatherBs/features/feature_bookmark/presentation/bloc/save_city_status.dart';
 import '../../../../core/resources/data_state.dart';
+import '../../../../core/usecases/UseCase.dart';
 import '../../domain/use_cases/get_all_city_usecase.dart';
 import '../../domain/use_cases/get_city_usecase.dart';
 import '../../domain/use_cases/save_city_usecase.dart';
@@ -32,7 +34,7 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
       /// emit Loading state
       emit(state.copyWith(GetAllCityLoading(),null,null,null));
 
-      DataState dataState = await getAllCityUseCase.call();
+      DataState dataState = await getAllCityUseCase(NoParams());
 
       /// emit Complete state
       if(dataState is DataSuccess){
@@ -51,7 +53,7 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
       /// emit Loading state
       emit(state.copyWith(null, GetCityLoading(), null,null));
 
-      DataState dataState = await getCityUseCase.call(event.cityName);
+      DataState dataState = await getCityUseCase(event.cityName);
 
       /// emit Complete state
       if(dataState is DataSuccess){
@@ -71,7 +73,7 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
       /// emit Loading state
       emit(state.copyWith(null, null, SaveCityLoading(),null));
 
-      DataState dataState = await saveCityUseCase.call(event.name);
+      DataState dataState = await saveCityUseCase(event.name);
 
       /// emit Complete state
       if(dataState is DataSuccess){
@@ -95,7 +97,7 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
       /// emit Loading state
       emit(state.copyWith(null,null,null, DeleteCityLoading()));
 
-      DataState dataState = await deleteCityUseCase.call(event.name);
+      DataState dataState = await deleteCityUseCase(event.name);
 
       /// emit Complete state
       if(dataState is DataSuccess){

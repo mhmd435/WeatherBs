@@ -32,7 +32,7 @@ void main(){
         when(mockWeatherRepository.fetchCurrentWeatherData(cityName)).thenAnswer((_) => Future.value(dataSuccess));
 
         /// act
-        final result = await getCurrentWeatherUseCase.call(cityName);
+        final result = await getCurrentWeatherUseCase(cityName);
 
         /// assert
         expect(result.data?.name, dataSuccess.data?.name);

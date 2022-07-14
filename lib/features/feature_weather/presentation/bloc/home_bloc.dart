@@ -22,7 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       /// emit State to Loading for just Cw
       emit(state.copyWith(CwLoading(), null));
 
-      DataState dataState = await _getCurrentWeatherUseCase.call(event.cityName);
+      DataState dataState = await _getCurrentWeatherUseCase(event.cityName);
 
       /// emit State to Completed for Just Cw
       if(dataState is DataSuccess){
@@ -42,7 +42,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       /// emit State to Loading for just Fw
       emit(state.copyWith(null, FwLoading()));
 
-      DataState dataState = await _getForecastWeatherUseCase.call(event.forecastParams);
+      DataState dataState = await _getForecastWeatherUseCase(event.forecastParams);
 
       /// emit State to Completed for just Fw
       if(dataState is DataSuccess){
