@@ -17,42 +17,43 @@ import 'package:weatherBs/features/feature_weather/domain/entities/current_city_
 
 class CurrentCityModel extends CurrentCityEntity{
   CurrentCityModel({
-      Coord? coord, 
-      List<Weather>? weather, 
-      String? base, 
-      Main? main, 
-      int? visibility, 
-      Wind? wind, 
-      Clouds? clouds, 
-      int? dt, 
-      Sys? sys, 
-      int? timezone, 
-      int? id, 
-      String? name, 
-      int? cod,}) : super(
-      coord,
-      weather,
-      base,
-      main,
-      visibility,
-      wind,
-      clouds,
-      dt,
-      sys,
-      timezone,
-      id,
-      name,
-      cod
+    Coord? coord,
+    List<Weather>? weather,
+    String? base,
+    Main? main,
+    int? visibility,
+    Wind? wind,
+    Clouds? clouds,
+    int? dt,
+    Sys? sys,
+    int? timezone,
+    int? id,
+    String? name,
+    int? cod,
+  }) : super(
+      coord: coord,
+      weather: weather,
+      base: base,
+      main: main,
+      visibility: visibility,
+      wind: wind,
+      clouds: clouds,
+      dt: dt,
+      sys: sys,
+      timezone: timezone,
+      id: id,
+      name: name,
+      cod: cod
   );
 
   factory CurrentCityModel.fromJson(dynamic json) {
     List<Weather> weather = [];
     if (json['weather'] != null) {
-
       json['weather'].forEach((v) {
         weather.add(Weather.fromJson(v));
       });
     }
+
     return CurrentCityModel(
       coord: json['coord'] != null ? Coord.fromJson(json['coord']) : null,
       weather: weather,
@@ -66,7 +67,7 @@ class CurrentCityModel extends CurrentCityEntity{
       timezone: json['timezone'],
       id: json['id'],
       name: json['name'],
-      cod: json['cod'],
+      cod: json['cod']
     );
   }
 }

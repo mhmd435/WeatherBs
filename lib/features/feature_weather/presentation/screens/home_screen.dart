@@ -14,6 +14,7 @@ import 'package:weatherBs/features/feature_weather/data/models/ForcastDaysModel.
 import 'package:weatherBs/features/feature_weather/data/models/SuggestCityModel.dart';
 import 'package:weatherBs/features/feature_weather/data/repository/SuggestCityRepositoryImpl.dart';
 import 'package:weatherBs/features/feature_weather/domain/entities/current_city_entity.dart';
+import 'package:weatherBs/features/feature_weather/domain/entities/forecase_days_entity.dart';
 import 'package:weatherBs/features/feature_weather/presentation/bloc/cw_status.dart';
 import 'package:weatherBs/features/feature_weather/presentation/bloc/fw_status.dart';
 import 'package:weatherBs/features/feature_weather/presentation/bloc/home_bloc.dart';
@@ -343,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen>
                                             if (state.fwStatus is FwCompleted) {
                                               /// casting
                                               final FwCompleted fwCompleted = state.fwStatus as FwCompleted;
-                                              final ForcastDaysModel forecastDaysModel = fwCompleted.forcastDaysModel;
+                                              final ForecastDaysEntity forecastDaysEntity = fwCompleted.forecastDaysEntity;
 
                                               return Column(
                                                 children: [
@@ -363,7 +364,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                               left: 20,),
                                                       child: LineChart(
                                                         sampleData1(
-                                                            forecastDaysModel,),
+                                                          forecastDaysEntity,),
                                                       ),
                                                     ),
                                                   ),
@@ -438,8 +439,8 @@ class _HomeScreenState extends State<HomeScreen>
                                   if (state.fwStatus is FwCompleted) {
                                     /// casting
                                     final FwCompleted fwCompleted = state.fwStatus as FwCompleted;
-                                    final ForcastDaysModel forcastDaysModel = fwCompleted.forcastDaysModel;
-                                    final List<Daily> mainDaily = forcastDaysModel.daily!;
+                                    final ForecastDaysEntity forecastDaysEntity = fwCompleted.forecastDaysEntity;
+                                    final List<Daily> mainDaily = forecastDaysEntity.daily!;
 
                                     return ListView.builder(
                                         shrinkWrap: true,
@@ -607,8 +608,8 @@ class _HomeScreenState extends State<HomeScreen>
 
 
 
-  LineChartData sampleData1(ForcastDaysModel forecastDaysModel) {
-    final List<Daily> mainDaily = forecastDaysModel.daily!;
+  LineChartData sampleData1(ForecastDaysEntity forecastDaysEntity) {
+    final List<Daily> mainDaily = forecastDaysEntity.daily!;
 
     return LineChartData(
       lineTouchData: LineTouchData(

@@ -7,9 +7,9 @@ import 'dart:async' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:weatherBs/core/params/ForecastParams.dart' as _i7;
 import 'package:weatherBs/core/resources/data_state.dart' as _i2;
-import 'package:weatherBs/features/feature_weather/data/models/CurrentCityModel.dart'
+import 'package:weatherBs/features/feature_weather/domain/entities/current_city_entity.dart'
     as _i5;
-import 'package:weatherBs/features/feature_weather/data/models/ForcastDaysModel.dart'
+import 'package:weatherBs/features/feature_weather/domain/entities/forecase_days_entity.dart'
     as _i6;
 import 'package:weatherBs/features/feature_weather/domain/repository/weather_repository.dart'
     as _i3;
@@ -35,19 +35,19 @@ class MockWeatherRepository extends _i1.Mock implements _i3.WeatherRepository {
   }
 
   @override
-  _i4.Future<_i2.DataState<_i5.CurrentCityModel>> fetchCurrentWeatherData(
+  _i4.Future<_i2.DataState<_i5.CurrentCityEntity>> fetchCurrentWeatherData(
           String? cityName) =>
       (super.noSuchMethod(
               Invocation.method(#fetchCurrentWeatherData, [cityName]),
-              returnValue: Future<_i2.DataState<_i5.CurrentCityModel>>.value(
-                  _FakeDataState_0<_i5.CurrentCityModel>()))
-          as _i4.Future<_i2.DataState<_i5.CurrentCityModel>>);
+              returnValue: Future<_i2.DataState<_i5.CurrentCityEntity>>.value(
+                  _FakeDataState_0<_i5.CurrentCityEntity>()))
+          as _i4.Future<_i2.DataState<_i5.CurrentCityEntity>>);
   @override
-  _i4.Future<_i2.DataState<_i6.ForcastDaysModel>> fetchForecastWeatherData(
+  _i4.Future<_i2.DataState<_i6.ForecastDaysEntity>> fetchForecastWeatherData(
           _i7.ForecastParams? params) =>
       (super.noSuchMethod(
               Invocation.method(#fetchForecastWeatherData, [params]),
-              returnValue: Future<_i2.DataState<_i6.ForcastDaysModel>>.value(
-                  _FakeDataState_0<_i6.ForcastDaysModel>()))
-          as _i4.Future<_i2.DataState<_i6.ForcastDaysModel>>);
+              returnValue: Future<_i2.DataState<_i6.ForecastDaysEntity>>.value(
+                  _FakeDataState_0<_i6.ForecastDaysEntity>()))
+          as _i4.Future<_i2.DataState<_i6.ForecastDaysEntity>>);
 }

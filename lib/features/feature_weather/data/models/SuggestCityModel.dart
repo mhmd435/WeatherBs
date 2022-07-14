@@ -1,40 +1,30 @@
+import 'package:weatherBs/features/feature_weather/domain/entities/suggest_city_entity.dart';
+
 /// data : [{"id":58764,"wikiDataId":"Q605157","type":"CITY","city":"Babol","name":"Babol","country":"Iran","countryCode":"IR","region":"Mazandaran","regionCode":"21","latitude":36.55,"longitude":52.683333333,"population":250217}]
 /// metadata : {"currentOffset":0,"totalCount":1}
 
-class SuggestCityModel {
+class SuggestCityModel extends SuggestCityEntity{
   SuggestCityModel({
       List<Data>? data, 
-      Metadata? metadata,}){
-    _data = data;
-    _metadata = metadata;
-}
+      Metadata? metadata,}) : super(
+    data: data,
+    metadata: metadata
+  );
 
-  SuggestCityModel.fromJson(dynamic json) {
+  factory SuggestCityModel.fromJson(dynamic json) {
+    /// parse json to object
+    List<Data> data = [];
     if (json['data'] != null) {
-      _data = [];
       json['data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        data.add(Data.fromJson(v));
       });
     }
-    _metadata = json['metadata'] != null ? Metadata.fromJson(json['metadata']) : null;
+
+    return SuggestCityModel(
+      data: data,
+      metadata: json['metadata'] != null ? Metadata.fromJson(json['metadata']) : null,
+    );
   }
-  List<Data>? _data;
-  Metadata? _metadata;
-
-  List<Data>? get data => _data;
-  Metadata? get metadata => _metadata;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
-    }
-    if (_metadata != null) {
-      map['metadata'] = _metadata?.toJson();
-    }
-    return map;
-  }
-
 }
 
 /// currentOffset : 0

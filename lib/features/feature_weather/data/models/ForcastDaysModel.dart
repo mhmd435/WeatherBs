@@ -1,3 +1,5 @@
+import 'package:weatherBs/features/feature_weather/domain/entities/forecase_days_entity.dart';
+
 /// lat : 51.4215
 /// lon : 35.6944
 /// timezone : "Europe/Moscow"
@@ -6,75 +8,53 @@
 /// daily : [{"dt":1654419600,"sunrise":1654392221,"sunset":1654451279,"moonrise":1654410000,"moonset":1654379580,"moon_phase":0.18,"temp":{"day":20.35,"min":11.73,"max":20.73,"night":12.1,"eve":17.87,"morn":15.13},"feels_like":{"day":20.09,"night":11.72,"eve":17.72,"morn":14.76},"pressure":1017,"humidity":63,"dew_point":13.08,"wind_speed":4.41,"wind_deg":2,"wind_gust":5.18,"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],"clouds":99,"pop":0.73,"rain":0.95,"uvi":5.32},{"dt":1654506000,"sunrise":1654478586,"sunset":1654537735,"moonrise":1654500780,"moonset":1654467240,"moon_phase":0.21,"temp":{"day":18.65,"min":9.55,"max":19.81,"night":12.28,"eve":18.85,"morn":10.73},"feels_like":{"day":18.19,"night":11.73,"eve":18.62,"morn":10.23},"pressure":1019,"humidity":62,"dew_point":11.28,"wind_speed":5.31,"wind_deg":4,"wind_gust":6.93,"weather":[{"id":800,"main":"Clear","description":"clear sky","icon":"01d"}],"clouds":0,"pop":0,"uvi":6.67},{"dt":1654592400,"sunrise":1654564953,"sunset":1654624188,"moonrise":1654591620,"moonset":1654554660,"moon_phase":0.25,"temp":{"day":20.42,"min":11.15,"max":21.1,"night":12.97,"eve":18.82,"morn":12.69},"feels_like":{"day":20.06,"night":12.52,"eve":18.69,"morn":12.23},"pressure":1019,"humidity":59,"dew_point":12.21,"wind_speed":2.95,"wind_deg":352,"wind_gust":3.25,"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04d"}],"clouds":76,"pop":0,"uvi":6.28},{"dt":1654678800,"sunrise":1654651324,"sunset":1654710639,"moonrise":1654682460,"moonset":1654641900,"moon_phase":0.27,"temp":{"day":20.58,"min":11.34,"max":21.6,"night":17.1,"eve":20.15,"morn":13.16},"feels_like":{"day":20.23,"night":16.72,"eve":20,"morn":12.75},"pressure":1020,"humidity":59,"dew_point":12.3,"wind_speed":2.22,"wind_deg":90,"wind_gust":2.44,"weather":[{"id":800,"main":"Clear","description":"clear sky","icon":"01d"}],"clouds":0,"pop":0,"uvi":6.74},{"dt":1654765200,"sunrise":1654737697,"sunset":1654797088,"moonrise":1654773480,"moonset":1654729080,"moon_phase":0.31,"temp":{"day":21.12,"min":13.27,"max":21.57,"night":16.51,"eve":19.97,"morn":13.62},"feels_like":{"day":20.78,"night":16.15,"eve":19.9,"morn":13.13},"pressure":1018,"humidity":57,"dew_point":12.44,"wind_speed":2.43,"wind_deg":162,"wind_gust":2.97,"weather":[{"id":800,"main":"Clear","description":"clear sky","icon":"01d"}],"clouds":4,"pop":0,"uvi":6.28},{"dt":1654851600,"sunrise":1654824074,"sunset":1654883534,"moonrise":1654864740,"moonset":1654816320,"moon_phase":0.34,"temp":{"day":22.05,"min":15.18,"max":22.11,"night":18.26,"eve":20.73,"morn":16.02},"feels_like":{"day":21.75,"night":17.81,"eve":20.66,"morn":15.71},"pressure":1018,"humidity":55,"dew_point":12.85,"wind_speed":2.09,"wind_deg":126,"wind_gust":1.81,"weather":[{"id":804,"main":"Clouds","description":"overcast clouds","icon":"04d"}],"clouds":99,"pop":0,"uvi":7},{"dt":1654938000,"sunrise":1654910453,"sunset":1654969977,"moonrise":1654956180,"moonset":1654903620,"moon_phase":0.38,"temp":{"day":23.54,"min":17.4,"max":24.31,"night":18.56,"eve":23.85,"morn":17.4},"feels_like":{"day":23.31,"night":18.53,"eve":24.04,"morn":16.95},"pressure":1018,"humidity":52,"dew_point":13.17,"wind_speed":2.35,"wind_deg":292,"wind_gust":3.12,"weather":[{"id":800,"main":"Clear","description":"clear sky","icon":"01d"}],"clouds":2,"pop":0.2,"uvi":7},{"dt":1655024400,"sunrise":1654996836,"sunset":1655056418,"moonrise":1655047980,"moonset":1654991100,"moon_phase":0.42,"temp":{"day":23.18,"min":15.56,"max":23.64,"night":16.91,"eve":22.57,"morn":16.44},"feels_like":{"day":23.12,"night":16.67,"eve":22.66,"morn":16.57},"pressure":1016,"humidity":60,"dew_point":15.09,"wind_speed":4.04,"wind_deg":339,"wind_gust":4.82,"weather":[{"id":800,"main":"Clear","description":"clear sky","icon":"01d"}],"clouds":1,"pop":0.12,"uvi":7}]
 /// alerts : [{"sender_name":"","event":"Thunderstorms","start":1654408800,"end":1654452000,"description":"","tags":["Thunderstorm"]},{"sender_name":"","event":"Гроза","start":1654408800,"end":1654452000,"description":"местами гроза","tags":["Thunderstorm"]}]
 
-class ForcastDaysModel {
-  ForcastDaysModel({
+class ForecastDaysModel extends ForecastDaysEntity{
+  ForecastDaysModel({
       double? lat, 
       double? lon, 
       String? timezone, 
       int? timezoneOffset, 
       Current? current, 
       List<Daily>? daily, 
-      List<Alerts>? alerts,}){
-    _lat = lat;
-    _lon = lon;
-    _timezone = timezone;
-    _timezoneOffset = timezoneOffset;
-    _current = current;
-    _daily = daily;
-    _alerts = alerts;
-}
+      List<Alerts>? alerts,}) : super(
+    lat: lat,
+    lon: lon,
+    timezone: timezone,
+    timezoneOffset: timezoneOffset,
+    current: current,
+    daily: daily,
+    alerts: alerts
+  );
 
-  ForcastDaysModel.fromJson(dynamic json) {
-    _lat = json['lat'].toDouble();
-    _lon = json['lon'].toDouble();
-    _timezone = json['timezone'];
-    _timezoneOffset = json['timezone_offset'];
-    _current = json['current'] != null ? Current.fromJson(json['current']) : null;
+  factory ForecastDaysModel.fromJson(dynamic json) {
+
+    /// convert daily from json
+    List<Daily> daily = [];
     if (json['daily'] != null) {
-      _daily = [];
       json['daily'].forEach((v) {
-        _daily?.add(Daily.fromJson(v));
+        daily.add(Daily.fromJson(v));
       });
     }
+
+    /// convert alerts from json
+    List<Alerts> alerts = [];
     if (json['alerts'] != null) {
-      _alerts = [];
       json['alerts'].forEach((v) {
-        _alerts?.add(Alerts.fromJson(v));
+        alerts.add(Alerts.fromJson(v));
       });
     }
-  }
-  double? _lat;
-  double? _lon;
-  String? _timezone;
-  int? _timezoneOffset;
-  Current? _current;
-  List<Daily>? _daily;
-  List<Alerts>? _alerts;
 
-  double? get lat => _lat;
-  double? get lon => _lon;
-  String? get timezone => _timezone;
-  int? get timezoneOffset => _timezoneOffset;
-  Current? get current => _current;
-  List<Daily>? get daily => _daily;
-  List<Alerts>? get alerts => _alerts;
+    return ForecastDaysModel(
+      lat: json['lat'].toDouble(),
+      lon: json['lon'].toDouble(),
+      timezone: json['timezone'],
+      timezoneOffset: json['timezone_offset'],
+      current: json['current'] != null ? Current.fromJson(json['current']) : null,
+      daily: daily,
+      alerts: alerts
+    );
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['lat'] = _lat;
-    map['lon'] = _lon;
-    map['timezone'] = _timezone;
-    map['timezone_offset'] = _timezoneOffset;
-    if (_current != null) {
-      map['current'] = _current?.toJson();
-    }
-    if (_daily != null) {
-      map['daily'] = _daily?.map((v) => v.toJson()).toList();
-    }
-    if (_alerts != null) {
-      map['alerts'] = _alerts?.map((v) => v.toJson()).toList();
-    }
-    return map;
+
   }
 
 }

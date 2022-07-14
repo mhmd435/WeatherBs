@@ -4,6 +4,7 @@ import 'package:weatherBs/core/params/ForecastParams.dart';
 import 'package:weatherBs/core/resources/data_state.dart';
 import 'package:weatherBs/features/feature_weather/data/models/CurrentCityModel.dart';
 import 'package:weatherBs/features/feature_weather/domain/entities/current_city_entity.dart';
+import 'package:weatherBs/features/feature_weather/domain/entities/forecase_days_entity.dart';
 import '../../domain/repository/weather_repository.dart';
 import '../data_source/remote/ApiProvider.dart';
 import '../models/ForcastDaysModel.dart';
@@ -19,7 +20,10 @@ class WeatherRepositoryImpl extends WeatherRepository{
       Response response = await _apiProvider.sendRequestCurrentWeather(cityName);
 
       if(response.statusCode == 200){
+        /// init model
         CurrentCityEntity currentCityEntity = CurrentCityModel.fromJson(response.data);
+        /// convert Model to Entity
+        // CurrentCityEntity currentCityEntity = currentCityModel.toEntity();
         return DataSuccess(currentCityEntity);
       }else{
         return DataFailed("Something Went Wrong. try again...");
@@ -31,13 +35,13 @@ class WeatherRepositoryImpl extends WeatherRepository{
   }
 
   @override
-  Future<DataState<ForcastDaysModel>> fetchForecastWeatherData(ForecastParams params) async {
+  Future<DataState<ForecastDaysEntity>> fetchForecastWeatherData(ForecastParams params) async {
     try{
       Response response = await _apiProvider.sendRequest7DaysForcast(params);
 
       if(response.statusCode == 200){
-        ForcastDaysModel forecastDaysModel = ForcastDaysModel.fromJson(response.data);
-        return DataSuccess(forecastDaysModel);
+        ForecastDaysEntity forecastDaysEntity = ForecastDaysModel.fromJson(response.data);
+        return DataSuccess(forecastDaysEntity);
       }else{
         return DataFailed("Something Went Wrong. try again...");
       }

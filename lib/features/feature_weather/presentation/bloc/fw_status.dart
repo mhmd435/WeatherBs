@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:weatherBs/features/feature_weather/domain/entities/forecase_days_entity.dart';
 import '../../data/models/ForcastDaysModel.dart';
 
 @immutable
@@ -10,8 +11,8 @@ class FwLoading extends FwStatus{}
 
 /// loaded state
 class FwCompleted extends FwStatus{
-  final ForcastDaysModel forcastDaysModel;
-  FwCompleted(this.forcastDaysModel);
+  final ForecastDaysEntity forecastDaysEntity;
+  FwCompleted(this.forecastDaysEntity);
 }
 
 /// error state

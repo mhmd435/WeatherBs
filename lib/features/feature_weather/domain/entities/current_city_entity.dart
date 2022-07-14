@@ -18,7 +18,7 @@ class CurrentCityEntity extends Equatable{
   final String? name;
   final int? cod;
 
-  CurrentCityEntity(
+  CurrentCityEntity({
       this.coord,
       this.weather,
       this.base,
@@ -31,12 +31,24 @@ class CurrentCityEntity extends Equatable{
       this.timezone,
       this.id,
       this.name,
-      this.cod);
+      this.cod});
 
   @override
   // TODO: implement props
   List<Object?> get props => [
-
+    coord,
+    weather,
+    base,
+    main,
+    visibility,
+    wind,
+    clouds,
+    dt,
+    sys,
+    timezone,
+    id,
+    name,
+    cod,
   ];
 
   @override
