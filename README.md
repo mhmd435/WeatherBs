@@ -37,6 +37,9 @@ Technologies used in this project:
 * Flutter
 * Clean Architecture
 * Bloc statemanagment
+* Repository pattern
+* Lint
+* Mock Test
 * Get It (Dependency Injection)
 * fl chart
 * Dio
