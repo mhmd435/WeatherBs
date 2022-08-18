@@ -1,5 +1,6 @@
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../../core/params/ForecastParams.dart';
 import '../../../../core/resources/data_state.dart';
@@ -20,18 +21,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LoadCwEvent>((event, emit) async {
 
       /// emit State to Loading for just Cw
-      emit(state.copyWith(CwLoading(), null));
+      emit(state.copyWith(newCwStatus: CwLoading()));
 
       DataState dataState = await _getCurrentWeatherUseCase(event.cityName);
 
       /// emit State to Completed for Just Cw
       if(dataState is DataSuccess){
-        emit(state.copyWith(CwCompleted(dataState.data), null));
+        emit(state.copyWith(newCwStatus: CwCompleted(dataState.data)));
       }
 
       /// emit State to Error for Just Cw
       if(dataState is DataFailed){
-        emit(state.copyWith(CwError(dataState.error), null));
+        emit(state.copyWith(newCwStatus: CwError(dataState.error)));
       }
     });
 
@@ -40,18 +41,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LoadFwEvent>((event, emit) async {
 
       /// emit State to Loading for just Fw
-      emit(state.copyWith(null, FwLoading()));
+      emit(state.copyWith(newFwStatus: FwLoading()));
 
       DataState dataState = await _getForecastWeatherUseCase(event.forecastParams);
 
       /// emit State to Completed for just Fw
       if(dataState is DataSuccess){
-        emit(state.copyWith(null, FwCompleted(dataState.data)));
+        emit(state.copyWith(newFwStatus: FwCompleted(dataState.data)));
       }
 
       /// emit State to Error for just Fw
       if(dataState is DataFailed){
-        emit(state.copyWith(null, FwError(dataState.error)));
+        emit(state.copyWith(newFwStatus: FwError(dataState.error)));
       }
 
     });

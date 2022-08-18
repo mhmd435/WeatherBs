@@ -17,7 +17,6 @@ class CityRepositoryImpl extends CityRepository{
 
       // check city exist or not
       City? checkCity = await cityDao.findCityByName(cityName);
-      print("Check City : $checkCity");
       if(checkCity != null){
         return DataFailed(cityName + " has Already exist");
       }
@@ -40,7 +39,6 @@ class CityRepositoryImpl extends CityRepository{
       List<City> cities =  await cityDao.getAllCity();
       return DataSuccess(cities);
     }catch(e){
-      print(e.toString());
       return DataFailed(e.toString());
     }
   }

@@ -13,8 +13,6 @@ class ApiProvider{
     var response = await _dio.get(
         Constants.baseUrl + "/data/2.5/weather",
         queryParameters: {'q': cityname, 'appid': apiKey, 'units': 'metric'});
-
-
     return response;
   }
 

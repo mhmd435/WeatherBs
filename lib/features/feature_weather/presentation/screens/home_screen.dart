@@ -4,17 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:weatherBs/core/params/ForecastParams.dart';
-import 'package:weatherBs/core/utlis/DateConverter.dart';
-import 'package:weatherBs/core/widgets/AppBackground.dart';
-import 'package:weatherBs/core/widgets/DotLoadingWidget.dart';
+import 'package:weatherBs/core/utlis/date_converter.dart';
+import 'package:weatherBs/core/widgets/app_background.dart';
+import 'package:weatherBs/core/widgets/dot_loading_widget.dart';
 import 'package:weatherBs/features/feature_bookmark/presentation/bloc/bookmark_bloc.dart';
 import 'package:weatherBs/features/feature_weather/data/data_source/remote/ApiProvider.dart';
-import 'package:weatherBs/features/feature_weather/data/models/CurrentCityModel.dart';
 import 'package:weatherBs/features/feature_weather/data/models/ForcastDaysModel.dart';
 import 'package:weatherBs/features/feature_weather/data/models/SuggestCityModel.dart';
-import 'package:weatherBs/features/feature_weather/data/repository/SuggestCityRepositoryImpl.dart';
+import 'package:weatherBs/features/feature_weather/data/repository/weather_repositoryimpl.dart';
 import 'package:weatherBs/features/feature_weather/domain/entities/current_city_entity.dart';
 import 'package:weatherBs/features/feature_weather/domain/entities/forecase_days_entity.dart';
+import 'package:weatherBs/features/feature_weather/domain/repository/weather_repository.dart';
 import 'package:weatherBs/features/feature_weather/presentation/bloc/cw_status.dart';
 import 'package:weatherBs/features/feature_weather/presentation/bloc/fw_status.dart';
 import 'package:weatherBs/features/feature_weather/presentation/bloc/home_bloc.dart';
@@ -29,24 +29,14 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with AutomaticKeepAliveClientMixin {
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin {
   TextEditingController textEditingController = TextEditingController();
-  String cityName = "Tehran";
 
   final PageController _pageController = PageController();
 
   // Inject
-  SuggestCityRepositoryImpl suggestCityRepository =
-      SuggestCityRepositoryImpl(locator<ApiProvider>());
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    BlocProvider.of<HomeBloc>(context).add(LoadCwEvent(cityName));
-  }
+  WeatherRepository weatherRepository =
+      WeatherRepositoryImpl(locator<ApiProvider>());
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),),
                     suggestionsCallback: (String prefix) async {
-                      return suggestCityRepository.fetchSuggestData(prefix);
+                      return weatherRepository.fetchSuggestData(prefix);
                     },
                     itemBuilder: (context, Data model) {
                       return ListTile(
@@ -173,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen>
               builder: (context, state) {
                 /// show Loading State for Cw
                 if (state.cwStatus is CwLoading) {
-                  return const Expanded(child: Center(child: DotLoadingWidget()));
+                  return const Expanded(child: DotLoadingWidget());
                 }
 
                 /// show Completed State for Cw
@@ -393,7 +383,7 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       ),
 
-                      // pageView Indicator
+                      /// pageView Indicator
                       Center(
                         child: SmoothPageIndicator(
                             controller: _pageController,
@@ -411,6 +401,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     curve: Curves.bounceOut,),),
                       ),
 
+                      /// divider
                       Padding(
                         padding: const EdgeInsets.only(top: 30),
                         child: Container(
@@ -419,6 +410,8 @@ class _HomeScreenState extends State<HomeScreen>
                           width: double.infinity,
                         ),
                       ),
+
+                      /// forecast weather 7 days
                       Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: SizedBox(

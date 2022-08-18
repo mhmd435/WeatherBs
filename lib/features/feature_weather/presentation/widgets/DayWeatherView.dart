@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../core/utlis/DateConverter.dart';
+import '../../../../core/utlis/date_converter.dart';
 import '../../data/models/ForcastDaysModel.dart';
 
 class DaysWeatherView extends StatefulWidget {

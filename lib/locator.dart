@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:weatherBs/features/feature_weather/data/repository/SuggestCityRepositoryImpl.dart';
 import 'package:weatherBs/features/feature_weather/data/repository/weather_repositoryimpl.dart';
 import 'package:weatherBs/features/feature_bookmark/data/data_source/local/database.dart';
 import 'package:weatherBs/features/feature_bookmark/domain/repository/city_repository.dart';
@@ -25,7 +24,6 @@ Future<void> setup() async {
 
   // inject Repositories
   locator.registerSingleton<WeatherRepository>(WeatherRepositoryImpl(locator()));
-  locator.registerSingleton<SuggestCityRepositoryImpl>(SuggestCityRepositoryImpl(locator()));
   locator.registerSingleton<CityRepository>(CityRepositoryImpl(database.cityDao));
 
   // inject UseCases

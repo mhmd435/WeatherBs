@@ -13,6 +13,4 @@ abstract class CityRepository{
   Future<DataState<String>> deleteCityByName(String name);
 
 
-// Future<DataState<String>> deleteCityFromDB(String cityName);
-
 }
