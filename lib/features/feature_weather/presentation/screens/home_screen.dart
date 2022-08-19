@@ -15,10 +15,11 @@ import 'package:weatherBs/features/feature_weather/data/repository/weather_repos
 import 'package:weatherBs/features/feature_weather/domain/entities/current_city_entity.dart';
 import 'package:weatherBs/features/feature_weather/domain/entities/forecase_days_entity.dart';
 import 'package:weatherBs/features/feature_weather/domain/repository/weather_repository.dart';
+import 'package:weatherBs/features/feature_weather/domain/use_cases/get_suggestion_city_usecase.dart';
 import 'package:weatherBs/features/feature_weather/presentation/bloc/cw_status.dart';
 import 'package:weatherBs/features/feature_weather/presentation/bloc/fw_status.dart';
 import 'package:weatherBs/features/feature_weather/presentation/bloc/home_bloc.dart';
-import 'package:weatherBs/features/feature_weather/presentation/widgets/DayWeatherView.dart';
+import 'package:weatherBs/features/feature_weather/presentation/widgets/day_weather_view.dart';
 import 'package:weatherBs/features/feature_weather/presentation/widgets/bookmark_icon.dart';
 import 'package:weatherBs/locator.dart';
 
@@ -35,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   final PageController _pageController = PageController();
 
   // Inject
-  WeatherRepository weatherRepository =
-      WeatherRepositoryImpl(locator<ApiProvider>());
+  GetSuggestionCityUseCase getSuggestionCityUseCase =
+      GetSuggestionCityUseCase(locator());
 
   @override
   Widget build(BuildContext context) {
@@ -53,56 +54,54 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
       child: SafeArea(
         child: Column(
           children: [
+            SizedBox(height: height * 0.02,),
             /// searchBox and bookmark icon
             Padding(
-              padding: EdgeInsets.only(
-                  top: height * 0.02,
-                  left: width * 0.03,
-                  right: width * 0.03,),
+              padding: EdgeInsets.symmetric(horizontal: width * 0.03),
               child: Row(
                 children: [
                   /// Search Box
                   Expanded(
                       child: TypeAheadField(
-                    textFieldConfiguration: TextFieldConfiguration(
-                        onSubmitted: (String prefix) {
-                          textEditingController.text = prefix;
-                          BlocProvider.of<HomeBloc>(context)
-                              .add(LoadCwEvent(prefix));
-                        },
-                        controller: textEditingController,
-                        style: DefaultTextStyle.of(context).style.copyWith(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
-                        decoration: const InputDecoration(
-                          contentPadding:
-                              EdgeInsets.fromLTRB(20, 0, 0, 0),
-                          hintText: "Enter a City...",
-                          hintStyle: TextStyle(color: Colors.white),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
+                          textFieldConfiguration: TextFieldConfiguration(
+                              onSubmitted: (String prefix) {
+                                textEditingController.text = prefix;
+                                BlocProvider.of<HomeBloc>(context)
+                                    .add(LoadCwEvent(prefix));
+                              },
+                              controller: textEditingController,
+                              style: DefaultTextStyle.of(context).style.copyWith(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                hintText: "Enter a City...",
+                                hintStyle: TextStyle(color: Colors.white),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                ),
+                              ),),
+                          suggestionsCallback: (String prefix) async {
+                            return getSuggestionCityUseCase(prefix);
+                          },
+                          itemBuilder: (context, Data model) {
+                            return ListTile(
+                              leading: const Icon(Icons.location_on),
+                              title: Text(model.name!),
+                              subtitle: Text("${model.region!}, ${model.country!}"),
+                            );
+                          },
+                          onSuggestionSelected: (Data model) {
+                            textEditingController.text = model.name!;
+                            BlocProvider.of<HomeBloc>(context)
+                                .add(LoadCwEvent(model.name!));
+                          },
                         ),),
-                    suggestionsCallback: (String prefix) async {
-                      return weatherRepository.fetchSuggestData(prefix);
-                    },
-                    itemBuilder: (context, Data model) {
-                      return ListTile(
-                        leading: const Icon(Icons.location_on),
-                        title: Text(model.name!),
-                        subtitle: Text("${model.region!}, ${model.country!}"),
-                      );
-                    },
-                    onSuggestionSelected: (Data model) {
-                      textEditingController.text = model.name!;
-                      BlocProvider.of<HomeBloc>(context)
-                          .add(LoadCwEvent(model.name!));
-                    },
-                  ),),
 
                   const SizedBox(width: 10,),
 
