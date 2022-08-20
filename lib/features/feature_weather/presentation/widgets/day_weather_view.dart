@@ -1,11 +1,13 @@
 
 import 'package:flutter/material.dart';
+import 'package:weatherBs/config/responsive.dart';
+import 'package:weatherBs/core/widgets/app_background.dart';
 
 import '../../../../core/utlis/date_converter.dart';
 import '../../data/models/ForcastDaysModel.dart';
 
 class DaysWeatherView extends StatefulWidget {
-  Daily daily;
+  final Daily daily;
   DaysWeatherView({Key? key, required this.daily}) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class _DaysWeatherViewState extends State<DaysWeatherView> with SingleTickerProv
   Widget build(BuildContext context) {
 
     final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
 
     return AnimatedBuilder(
       animation: animationController,
@@ -45,56 +48,30 @@ class _DaysWeatherViewState extends State<DaysWeatherView> with SingleTickerProv
             child: Card(
               color: Colors.transparent,
               elevation: 0,
-              child: Container(
-                  width: 50,
-                  height: 50,
-                  child: Column(
-                    children: [
-                      Text(DateConverter.changeDtToDateTime(widget.daily.dt).toString(),
-                          style: TextStyle(fontSize: 12, color: Colors.grey)),
-                      Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
-                          child: setIconForMain(widget.daily.weather![0].description!)),
-                      Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
-                            child: Text(
-                                widget.daily.temp!.day!.round().toString() + "\u00B0",
-                                style: TextStyle(fontSize: 15, color: Colors.white)),
-                          )),
-                    ],
-                  )),
+              child: Column(
+                children: [
+                  Text(DateConverter.changeDtToDateTime(widget.daily.dt).toString(),
+                      style: TextStyle(fontSize: height * 0.015, color: Colors.grey)),
+                  SizedBox(height: height * 0.005,),
+
+                  Padding(
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: AppBackground.setIconForMain(widget.daily.weather![0].description!,height * 0.06)),
+                  Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Text(
+                            widget.daily.temp!.day!.round().toString() + "\u00B0",
+                            style: TextStyle(fontSize: height * 0.015, color: Colors.white)),
+                      )),
+                ],
+              ),
             ),
           ),
         );
       },
     );
   }
-
-  Image setIconForMain(description) {
-
-    if (description == "clear sky") {
-      return Image(
-          image: AssetImage(
-            'images/icons8-sun-96.png',
-          ));
-    } else if (description == "few clouds") {
-      return Image(image: AssetImage('images/icons8-partly-cloudy-day-80.png'));
-    } else if (description.contains("clouds")) {
-      return Image(image: AssetImage('images/icons8-clouds-80.png'));
-    } else if (description.contains("thunderstorm")) {
-      return Image(image: AssetImage('images/icons8-storm-80.png'));
-    } else if (description.contains("drizzle")) {
-      return Image(image: AssetImage('images/icons8-rain-cloud-80.png'));
-    } else if (description.contains("rain")) {
-      return Image(image: AssetImage('images/icons8-heavy-rain-80.png'));
-    } else if (description.contains("snow")) {
-      return Image(image: AssetImage('images/icons8-snow-80.png'));
-    } else {
-      return Image(image: AssetImage('images/icons8-windy-weather-80.png'));
-    }
-  }
-
 
   @override
   void dispose() {

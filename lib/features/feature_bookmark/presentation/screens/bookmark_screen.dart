@@ -8,7 +8,7 @@ import '../bloc/get_all_city_status.dart';
 import '../../../feature_weather/presentation/bloc/home_bloc.dart';
 
 class BookmarkScreen extends StatefulWidget {
-  PageController pageController;
+  final PageController pageController;
 
   BookmarkScreen({Key? key, required this.pageController}) : super(key: key);
 

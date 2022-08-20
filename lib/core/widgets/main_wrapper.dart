@@ -32,7 +32,7 @@ class MainWrapper extends StatelessWidget {
 
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: BottomNav(Controller: _myPage),
+      bottomNavigationBar: BottomNav(controller: _myPage),
       body: Container(
         height: height,
         decoration: BoxDecoration(

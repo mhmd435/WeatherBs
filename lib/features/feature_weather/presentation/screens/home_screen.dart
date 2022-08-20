@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:weatherBs/config/responsive.dart';
 import 'package:weatherBs/core/params/ForecastParams.dart';
 import 'package:weatherBs/core/utlis/date_converter.dart';
 import 'package:weatherBs/core/widgets/app_background.dart';
@@ -71,12 +72,12 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                               },
                               controller: textEditingController,
                               style: DefaultTextStyle.of(context).style.copyWith(
-                                    fontSize: 20,
+                                    fontSize: height * 0.02,
                                     color: Colors.white,
                                   ),
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 contentPadding:
-                                    EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                    EdgeInsets.fromLTRB(20, height * 0.02, 0, height * 0.02),
                                 hintText: "Enter a City...",
                                 hintStyle: TextStyle(color: Colors.white),
                                 focusedBorder: OutlineInputBorder(
@@ -186,200 +187,193 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
                   return Expanded(
                     child: ListView(children: [
-                      // pageView
-                      Padding(
-                        padding: EdgeInsets.only(top: height * 0.02),
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 400,
-                          child: PageView.builder(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              allowImplicitScrolling: true,
-                              controller: _pageController,
-                              itemCount: 2,
-                              itemBuilder: (context, position) {
-                                if (position == 0) {
-                                  return Column(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 50),
-                                        child: Text(
-                                          cityDataEntity.name!,
-                                          style: const TextStyle(
-                                              fontSize: 30,
-                                              color: Colors.white,),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 20),
-                                        child: Text(
-                                          cityDataEntity
-                                              .weather![0].description!,
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey,),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 20),
-                                        child: AppBackground.setIconForMain(cityDataEntity.weather![0].description),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 20),
-                                        child: Text(
-                                          "${cityDataEntity.main!.temp!
-                                                  .round()}\u00B0",
-                                          style: const TextStyle(
-                                              fontSize: 50,
-                                              color: Colors.white,),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+
+                      /// pageView
+                      SizedBox(
+                        width: double.infinity,
+                        height: height * 0.42,
+                        child: PageView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            allowImplicitScrolling: true,
+                            controller: _pageController,
+                            itemCount: 2,
+                            itemBuilder: (context, position) {
+                              if (position == 0) {
+                                return Column(
+                                  children: [
+                                    SizedBox(height: height * 0.025,),
+                                    /// city name
+                                    Text(
+                                      cityDataEntity.name!,
+                                      style: TextStyle(
+                                          fontSize: height * 0.035,
+                                          color: Colors.white,),
+                                    ),
+
+                                    SizedBox(height: height * 0.02,),
+
+                                    /// description
+                                    Text(
+                                      cityDataEntity
+                                          .weather![0].description!,
+                                      style: TextStyle(
+                                          fontSize: height * 0.025,
+                                          color: Colors.grey,),
+                                    ),
+
+                                    SizedBox(height: height * 0.015,),
+
+                                    /// main Icon
+                                    AppBackground.setIconForMain(cityDataEntity.weather![0].description,(Responsive.isMobile(context)) ? width * 0.2 : width * 0.1),
+
+                                    SizedBox(height: height * 0.02,),
+
+                                    /// main temp
+                                    Text(
+                                      "${cityDataEntity.main!.temp!
+                                              .round()}\u00B0",
+                                      style: TextStyle(
+                                          fontSize: width * 0.09,
+                                          color: Colors.white,),
+                                    ),
+
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Column(
                                           children: [
-                                            Column(
-                                              children: [
-                                                const Text(
-                                                  "max",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.grey,),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 10.0,),
-                                                  child: Text(
-                                                    "${cityDataEntity
-                                                            .main!.tempMax!
-                                                            .round()}\u00B0",
-                                                    style: const TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white,),
-                                                  ),
-                                                ),
-                                              ],
+                                            Text(
+                                              "max",
+                                              style: TextStyle(
+                                                  fontSize: (Responsive.isMobile(context)) ? width * 0.05 : width * 0.04,
+                                                  color: Colors.grey,),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10.0, right: 10,),
-                                              child: Container(
-                                                color: Colors.grey,
-                                                width: 2,
-                                                height: 40,
+                                              padding:
+                                                  const EdgeInsets.only(
+                                                      top: 10.0,),
+                                              child: Text(
+                                                "${cityDataEntity
+                                                        .main!.tempMax!
+                                                        .round()}\u00B0",
+                                                style: TextStyle(
+                                                    fontSize: (Responsive.isMobile(context)) ? width * 0.05 : width * 0.04,
+                                                    color: Colors.white,),
                                               ),
-                                            ),
-                                            Column(
-                                              children: [
-                                                const Text(
-                                                  "min",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.grey,),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 10.0,),
-                                                  child: Text(
-                                                    "${cityDataEntity
-                                                            .main!.tempMin!
-                                                            .round()}\u00B0",
-                                                    style: const TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white,),
-                                                  ),
-                                                ),
-                                              ],
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    ],
-                                  );
-                                } else {
-                                  return SizedBox(
-                                    height: 400,
-                                    child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        height: 250,
-                                        child: BlocBuilder<HomeBloc, HomeState>(
-                                          buildWhen: (previous, current){
-                                            /// rebuild just when fwStatus Changed
-                                            if(previous.fwStatus == current.fwStatus){
-                                              return false;
-                                            }
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 20.0, right: 20,),
+                                          child: Container(
+                                            color: Colors.grey,
+                                            width: 2,
+                                            height: 40,
+                                          ),
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "min",
+                                              style: TextStyle(
+                                                  fontSize: (Responsive.isMobile(context)) ? width * 0.05 : width * 0.04,
+                                                  color: Colors.grey,),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.only(
+                                                      top: 10.0,),
+                                              child: Text(
+                                                "${cityDataEntity
+                                                        .main!.tempMin!
+                                                        .round()}\u00B0",
+                                                style: TextStyle(
+                                                    fontSize: (Responsive.isMobile(context)) ? width * 0.05 : width * 0.04,
+                                                    color: Colors.white,),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return SizedBox(
+                                  height: 400,
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: 250,
+                                      child: BlocBuilder<HomeBloc, HomeState>(
+                                        buildWhen: (previous, current){
+                                          /// rebuild just when fwStatus Changed
+                                          if(previous.fwStatus == current.fwStatus){
+                                            return false;
+                                          }
 
-                                            return true;
-                                          },
-                                          builder: (BuildContext context, state) {
+                                          return true;
+                                        },
+                                        builder: (BuildContext context, state) {
 
-                                            /// show Loading State for Fw
-                                            if (state.fwStatus is FwLoading) {
-                                              return const DotLoadingWidget();
-                                            }
+                                          /// show Loading State for Fw
+                                          if (state.fwStatus is FwLoading) {
+                                            return const DotLoadingWidget();
+                                          }
 
-                                            /// show Completed State for Fw
-                                            if (state.fwStatus is FwCompleted) {
-                                              /// casting
-                                              final FwCompleted fwCompleted = state.fwStatus as FwCompleted;
-                                              final ForecastDaysEntity forecastDaysEntity = fwCompleted.forecastDaysEntity;
+                                          /// show Completed State for Fw
+                                          if (state.fwStatus is FwCompleted) {
+                                            /// casting
+                                            final FwCompleted fwCompleted = state.fwStatus as FwCompleted;
+                                            final ForecastDaysEntity forecastDaysEntity = fwCompleted.forecastDaysEntity;
 
-                                              return Column(
-                                                children: [
-                                                  const Text(
-                                                    "Humidity",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 17,),
-                                                  ),
-                                                  Expanded(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets
-                                                                  .only(
-                                                              bottom: 20,
-                                                              right: 40,
-                                                              left: 20,),
-                                                      child: LineChart(
-                                                        sampleData1(
-                                                          forecastDaysEntity,),
-                                                      ),
+                                            return Column(
+                                              children: [
+                                                const Text(
+                                                  "Humidity",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17,),
+                                                ),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets
+                                                                .only(
+                                                            bottom: 20,
+                                                            right: 40,
+                                                            left: 20,),
+                                                    child: LineChart(
+                                                      sampleData1(
+                                                        forecastDaysEntity,),
                                                     ),
                                                   ),
-                                                ],
-                                              );
-                                            }
+                                                ),
+                                              ],
+                                            );
+                                          }
 
-                                            /// show Error State for Fw
-                                            if (state.fwStatus is FwError) {
-                                              final FwError fwError = state.fwStatus as FwError;
-                                              return Center(
-                                                child: Text(fwError.message!),
-                                              );
-                                            }
+                                          /// show Error State for Fw
+                                          if (state.fwStatus is FwError) {
+                                            final FwError fwError = state.fwStatus as FwError;
+                                            return Center(
+                                              child: Text(fwError.message!),
+                                            );
+                                          }
 
-                                            /// show Default for Fw
-                                            return Container();
+                                          /// show Default for Fw
+                                          return Container();
 
-                                          },
-                                        ),
+                                        },
                                       ),
                                     ),
-                                  );
-                                }
-                              },),
-                        ),
+                                  ),
+                                );
+                              }
+                            },),
                       ),
 
                       /// pageView Indicator
@@ -410,54 +404,53 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                         ),
                       ),
 
+                      SizedBox(height: height * 0.01,),
+
                       /// forecast weather 7 days
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 100,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Center(
-                              child: BlocBuilder<HomeBloc, HomeState>(
-                                builder: (BuildContext context, state) {
+                      SizedBox(
+                        width: double.infinity,
+                        height: height * 0.13,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Center(
+                            child: BlocBuilder<HomeBloc, HomeState>(
+                              builder: (BuildContext context, state) {
 
-                                  /// show Loading State for Fw
-                                  if (state.fwStatus is FwLoading) {
-                                    return const DotLoadingWidget();
-                                  }
+                                /// show Loading State for Fw
+                                if (state.fwStatus is FwLoading) {
+                                  return const DotLoadingWidget();
+                                }
 
-                                  /// show Completed State for Fw
-                                  if (state.fwStatus is FwCompleted) {
-                                    /// casting
-                                    final FwCompleted fwCompleted = state.fwStatus as FwCompleted;
-                                    final ForecastDaysEntity forecastDaysEntity = fwCompleted.forecastDaysEntity;
-                                    final List<Daily> mainDaily = forecastDaysEntity.daily!;
+                                /// show Completed State for Fw
+                                if (state.fwStatus is FwCompleted) {
+                                  /// casting
+                                  final FwCompleted fwCompleted = state.fwStatus as FwCompleted;
+                                  final ForecastDaysEntity forecastDaysEntity = fwCompleted.forecastDaysEntity;
+                                  final List<Daily> mainDaily = forecastDaysEntity.daily!;
 
-                                    return ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: 8,
-                                        itemBuilder: (BuildContext context,
-                                            int index,) {
-                                          return DaysWeatherView(
-                                              daily: mainDaily[index],);
-                                        },);
-                                  }
+                                  return ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: 8,
+                                      itemBuilder: (BuildContext context,
+                                          int index,) {
+                                        return DaysWeatherView(
+                                            daily: mainDaily[index],);
+                                      },);
+                                }
 
-                                  /// show Error State for Fw
-                                  if (state.fwStatus is FwError) {
-                                    final FwError fwError = state.fwStatus as FwError;
-                                    return Center(
-                                      child: Text(fwError.message!),
-                                    );
-                                  }
+                                /// show Error State for Fw
+                                if (state.fwStatus is FwError) {
+                                  final FwError fwError = state.fwStatus as FwError;
+                                  return Center(
+                                    child: Text(fwError.message!),
+                                  );
+                                }
 
-                                  /// show Default State for Fw
-                                  return Container();
+                                /// show Default State for Fw
+                                return Container();
 
-                                },
-                              ),
+                              },
                             ),
                           ),
                         ),
@@ -477,15 +470,15 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                             children: [
                               Column(
                                 children: [
-                                  const Text("wind speed",
+                                  Text("wind speed",
                                       style: TextStyle(
-                                          fontSize: 17, color: Colors.amber,),),
+                                          fontSize: height * 0.017, color: Colors.amber,),),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10.0),
                                     child: Text(
                                         "${cityDataEntity.wind!.speed!} m/s",
-                                        style: const TextStyle(
-                                            fontSize: 14,
+                                        style: TextStyle(
+                                            fontSize: height * 0.016,
                                             color: Colors.white,),),
                                   ),
                                 ],
@@ -502,16 +495,16 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child: Column(
                                   children: [
-                                    const Text("sunrise",
+                                    Text("sunrise",
                                         style: TextStyle(
-                                            fontSize: 17,
+                                            fontSize: height * 0.017,
                                             color: Colors.amber,),),
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(top: 10.0),
                                       child: Text(sunrise,
-                                          style: const TextStyle(
-                                              fontSize: 14,
+                                          style: TextStyle(
+                                              fontSize: height * 0.016,
                                               color: Colors.white,),),
                                     ),
                                   ],
@@ -528,14 +521,14 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                               Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child: Column(children: [
-                                  const Text("sunset",
+                                  Text("sunset",
                                       style: TextStyle(
-                                          fontSize: 17, color: Colors.amber,),),
+                                          fontSize: height * 0.017, color: Colors.amber,),),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10.0),
                                     child: Text(sunset,
-                                        style: const TextStyle(
-                                            fontSize: 14,
+                                        style: TextStyle(
+                                            fontSize: height * 0.016,
                                             color: Colors.white,),),
                                   ),
                                 ],),
@@ -551,15 +544,15 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                               Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child: Column(children: [
-                                  const Text("humidity",
+                                  Text("humidity",
                                       style: TextStyle(
-                                          fontSize: 17, color: Colors.amber,),),
+                                          fontSize: height * 0.017, color: Colors.amber,),),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10.0),
                                     child: Text(
                                         "${cityDataEntity.main!.humidity!}%",
-                                        style: const TextStyle(
-                                            fontSize: 14,
+                                        style: TextStyle(
+                                            fontSize: height * 0.016,
                                             color: Colors.white,),),
                                   ),
                                 ],),

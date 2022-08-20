@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:weatherBs/core/bloc/bottom_icon_cubit.dart';
 import 'package:weatherBs/features/feature_weather/data/repository/weather_repositoryimpl.dart';
 import 'package:weatherBs/features/feature_bookmark/data/data_source/local/database.dart';
 import 'package:weatherBs/features/feature_bookmark/domain/repository/city_repository.dart';
@@ -36,6 +37,7 @@ Future<void> setup() async {
 
   locator.registerSingleton<BookmarkBloc>(BookmarkBloc(locator(),locator(),locator(),locator()));
   locator.registerSingleton<HomeBloc>(HomeBloc(locator(),locator()));
+  locator.registerSingleton<BottomIconCubit>(BottomIconCubit());
   // locator.registerLazySingleton<Dio>(() => Dio());
 
 // Alternatively you could write it if you don't like global variables

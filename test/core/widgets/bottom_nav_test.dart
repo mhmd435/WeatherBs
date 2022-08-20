@@ -8,7 +8,7 @@ void main() {
   testWidgets('2 IconButton in bottom nav should be Exist', (tester) async {
     // Widget childWidget = IconButton(icon: const Icon(Icons.home), onPressed: () {  },);
     await tester.pumpWidget(MaterialApp(home: Scaffold(
-        bottomNavigationBar: BottomNav(Controller: PageController()),
+        bottomNavigationBar: BottomNav(controller: PageController()),
       ),
     ));
 
@@ -26,7 +26,7 @@ void main() {
     /// build widget
     PageController pageController = PageController();
     await tester.pumpWidget(MaterialApp(home: Scaffold(
-      bottomNavigationBar: BottomNav(Controller: pageController),
+      bottomNavigationBar: BottomNav(controller: pageController),
       body: PageView(
         controller: pageController,
         children: [
@@ -51,7 +51,7 @@ void main() {
     /// build widget
     PageController pageController = PageController();
     await tester.pumpWidget(MaterialApp(home: Scaffold(
-      bottomNavigationBar: BottomNav(Controller: pageController),
+      bottomNavigationBar: BottomNav(controller: pageController),
       body: PageView(
         controller: pageController,
         children: [

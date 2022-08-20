@@ -6,12 +6,16 @@ import '../../../feature_bookmark/presentation/bloc/get_city_status.dart';
 import '../../../feature_bookmark/presentation/bloc/save_city_status.dart';
 
 class BookMarkIcon extends StatelessWidget {
-  String name;
+  final String name;
 
   BookMarkIcon({Key? key, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+
     return BlocBuilder<BookmarkBloc, BookmarkState>(
       buildWhen: (previous, current){
         /// if state don't change => don't rebuild UI
@@ -84,7 +88,7 @@ class BookMarkIcon extends StatelessWidget {
                       /// call event for save Current City in Database
                       BlocProvider.of<BookmarkBloc>(context).add(SaveCwEvent(name));
                     },
-                    icon: Icon(city == null ? Icons.star_border : Icons.star, color: Colors.white, size: 35,));
+                    icon: Icon(city == null ? Icons.star_border : Icons.star, color: Colors.white, size: height * 0.04,));
               }
 
               /// show UI for Loading SaveCity

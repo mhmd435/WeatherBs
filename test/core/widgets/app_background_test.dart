@@ -28,17 +28,17 @@ void main() {
   group('setIconForMain test', () {
 
     test('clear sky should be return this pic', () {
-      var result = AppBackground.setIconForMain("clear sky");
+      var result = AppBackground.setIconForMain("clear sky",1);
       expect(result.image, AssetImage('images/icons8-sun-96.png',));
     });
 
     test('drizzle should be return this pic', () {
-      var result = AppBackground.setIconForMain("drizzle");
+      var result = AppBackground.setIconForMain("drizzle",1);
       expect(result.image, AssetImage('images/icons8-rain-cloud-80.png'));
     });
 
     test('snow should be return this pic', () {
-      var result = AppBackground.setIconForMain("snow");
+      var result = AppBackground.setIconForMain("snow",1);
       expect(result.image, AssetImage('images/icons8-snow-80.png'));
     });
 
